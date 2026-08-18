@@ -1,0 +1,46 @@
+button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: all .3s ease;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.primary {
+    background: var(--primary);
+    color: white;
+}
+
+.primary:hover {
+    background: var(--primary-dark);
+}
+
+.secondary {
+    background: var(--gray-400);
+    color: var(--text);
+}
+
+.secondary:hover {
+    background: var(--gray-500);
+}
+
+.success {
+    background: var(--success);
+    color: white;
+}
+
+.danger {
+    background: var(--danger);
+    color: white;
+}
+
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}

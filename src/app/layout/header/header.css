@@ -1,0 +1,151 @@
+.header {
+    height: 70px;
+    background: #ffffff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 25px;
+
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* ========================= */
+/* Partie gauche             */
+/* ========================= */
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo-square{
+
+    width:40px;
+    height:40px;
+
+    background:#ff7900;
+
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:11px;
+    font-weight:bold;
+}
+
+.separator{
+
+    width:1px;
+    height:35px;
+
+    background:#d9d9d9;
+
+}
+
+.header h1{
+
+    font-size:28px;
+
+    font-weight:600;
+
+    color:#202124;
+
+}
+
+/* ========================= */
+/* Partie droite             */
+/* ========================= */
+
+.header-right{
+
+    display:flex;
+    align-items:center;
+
+    gap:25px;
+
+}
+
+.notification{
+
+    width:40px;
+    height:40px;
+
+    border:none;
+
+    background:white;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+}
+
+.user{
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.avatar{
+
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    background:#ff7900;
+
+    color:white;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-weight:bold;
+
+}
+
+.user-info{
+    display:flex;
+    flex-direction:column;
+}
+
+.name{
+    font-size:15px;
+    font-weight:600;
+}
+
+.role{
+    font-size:13px;
+    color:#777;
+}
+
+.arrow{
+    font-size:12px;
+    cursor:pointer;
+}
+
+.logo-image{
+    width:40px;
+    height:40px;
+    object-fit:contain;
+}
+
+.company-name{
+    font-size:18px;
+    font-weight:600;
+}

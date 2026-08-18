@@ -1,0 +1,12 @@
+<button
+    [type]="type()"
+    [disabled]="disabled()"
+    [class.full-width]="fullWidth()"
+    [class.primary]="variant() === 'primary'"
+    [class.secondary]="variant() === 'secondary'"
+    [class.success]="variant() === 'success'"
+    [class.danger]="variant() === 'danger'">
+
+    {{ label() }}
+
+</button>

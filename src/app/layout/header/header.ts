@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'app-header',
@@ -6,4 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
-export class Header {}
+export class Header {
+  constructor(public layoutService: LayoutService){}
+  applicationTitle = 'Gestion des stagiaires';
+  companyName = 'Orange Mali';
+}

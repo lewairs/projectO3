@@ -1,1 +1,44 @@
-<p>header works!</p>
+<header class="header">
+
+  <div class="header-left">
+
+    <button class="menu-button" (click)="layoutService.toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="logo">
+        <!-- <img src="../../../../public/images/orange_logo.jpg" 
+        alt="Logo-Orange" class="Logo Orange"> -->
+      <span>{{companyName}}</span>
+    </div>
+
+    <div class="separator"></div>
+
+    <h1>{{applicationTitle}}</h1>
+
+  </div>
+
+  <div class="header-right">
+
+    <button class="notification">
+      <i class="fa-regular fa-bell"></i>
+    </button>
+
+    <div class="user">
+
+      <div class="avatar">
+        SD
+      </div>
+
+      <div class="user-info">
+        <span class="name">Name of Utilisateur</span>
+        <span class="role">Utilisateur</span>
+      </div>
+
+      <span class="arrow">▼</span>
+
+    </div>
+
+  </div>
+
+</header>

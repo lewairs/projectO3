@@ -1,0 +1,89 @@
+.card{
+
+    background:#fff;
+
+    border-radius:14px;
+
+    padding:24px;
+
+    margin-top:25px;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+
+}
+
+.card h2{
+
+    margin-bottom:20px;
+
+}
+
+.activity-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.activity-item{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:15px;
+
+    padding-bottom:15px;
+
+    border-bottom:1px solid #eee;
+
+}
+
+.activity-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.icon{
+
+    width:45px;
+
+    height:45px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:50%;
+
+    background:#FFF3E8;
+
+    font-size:22px;
+
+}
+
+.details{
+
+    flex:1;
+
+}
+
+.details p{
+
+    margin:0;
+
+    font-weight:500;
+
+}
+
+.details small{
+
+    color:#777;
+
+}

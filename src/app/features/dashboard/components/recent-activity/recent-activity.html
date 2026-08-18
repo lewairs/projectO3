@@ -1,0 +1,31 @@
+<div class="card">
+
+    <h2>Activité récente</h2>
+
+    <div class="activity-list">
+
+        @for(activity of activities; track activity.message){
+
+            <div class="activity-item">
+
+                <div class="icon">
+
+                    {{ activity.icon }}
+
+                </div>
+
+                <div class="details">
+
+                    <p>{{ activity.message }}</p>
+
+                    <small>{{ activity.date }}</small>
+
+                </div>
+
+            </div>
+
+        }
+
+    </div>
+
+</div>
