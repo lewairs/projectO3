@@ -20,7 +20,7 @@ export const routes: Routes = [
         component: Dashboard
     },
     {
-        path: 'stagiaire',
+        path: 'stagiaires',
         component: Stagiaires
     },
     {
