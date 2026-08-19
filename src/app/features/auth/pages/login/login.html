@@ -64,13 +64,12 @@
             </label>
         </div>
 
-        <button type="submit">
-            @if(isLoading){
-                Connexion...
-            }@else{
-                Se connecter
-            }
+        <button type="submit" [disabled]="loading">
+            {{loading ? 'connexion...' : 'Se connecter'}}
         </button>
+        <div class="error-message" *ngIf="errorMessage">
+            {{ errorMessage }}
+        </div>
         <div class="login-links">
             <a href="#">Mot de passe oublié ?</a>
         </div>
