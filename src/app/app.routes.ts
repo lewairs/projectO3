@@ -7,12 +7,17 @@ import { Encadreurs } from './pages/encadreurs/encadreurs';
 import { Projets } from './pages/projets/projets';
 import { Utilisateurs } from './pages/utilisateurs/utilisateurs';
 import { Parametres } from './pages/parametres/parametres';
+import { Login } from './features/auth/pages/login/login';
 
 export const routes: Routes = [
 
     {
+        path: 'login',
+        component: Login
+    },
+    {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'login',
         pathMatch: 'full'
     },
     {

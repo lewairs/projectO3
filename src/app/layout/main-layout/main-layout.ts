@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal, inject } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { Header } from '../../layout/header/header';
 import { Sidebar } from '../sidebar/sidebar';
 import { LayoutService} from '../../services/layout.service'
@@ -12,4 +12,16 @@ import { LayoutService} from '../../services/layout.service'
 })
 export class MainLayout {
   constructor(public layoutService: LayoutService){}
+
+  private router = inject(Router);
+
+  sidebarOpened = signal(true);
+
+   toggleSidebar() {
+    this.sidebarOpened.update(v => !v);
+  }
+
+  isLoginPage(): boolean {
+    return this.router.url === '/login';}
+  
 }
