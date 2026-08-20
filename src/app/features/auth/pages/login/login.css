@@ -102,12 +102,18 @@
     left:120px;
 }
 
+.logo img{
+    width:80px;
+    height:80px;
+    object-fit:contain;
+}
+
 /* ==========================
    PARTIE DROITE
 ========================== */
 
 .login-right {
-    flex: 0 0 40%;
+    flex: 0 0 52%;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -133,8 +139,11 @@
 }
 
 .subtitle {
-  color: #666;
-  margin-bottom: 35px;
+    margin-top:8px;
+    margin-bottom:35px;
+    color:#777;
+    font-size:15px;
+    line-height:1.5;
 }
 
 .form-group {
@@ -144,9 +153,11 @@
 }
 
 .form-group label {
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #333;
+    display:block;
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:600;
+    color:#444;
 }
 
 .form-group input {
@@ -168,17 +179,32 @@
     border-color:#ff7900;
 }
 
-button {
-  width: 100%;
-  height: 54px;
-  border: none;
-  border-radius: 10px;
-  background: #ff7900;
-  color: white;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: .25s;
+button[type = "submit"] {
+    width:100%;
+    height:56px;
+    margin-top:10px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#ff7900,#ff9800);
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .3s ease;
+    /* box-shadow:0 12px 25px rgba(255,121,0,.30); */
+}
+
+button[type="submit"]:hover{
+    transform:translateY(-2px);
+}
+
+button[type="submit"]:active{
+    transform:scale(.98);
+}
+
+button[type="submit"]:disabled{
+    opacity:.7;
+    cursor:not-allowed;
 }
 
 .login-button:active{
@@ -233,6 +259,20 @@ button:hover {
     transform:translateY(-50%);
 }
 
+.form-group,
+.login-links,
+.remember-me{
+    transition: .3s ease;
+}
+
+.field-error{
+    display:block;
+    margin-top:8px;
+    color:#d32f2f;
+    font-size:13px;
+    font-weight:500;
+}
+
 .login-links{
     margin-top:20px;
     text-align:center;
@@ -247,12 +287,14 @@ button:hover {
 
 .login-links a:hover{
     text-decoration:underline;
+    color: #e66b00;
 }
 
 .input-group{
     position:relative;
     display:flex;
     align-items:center;
+    transition: .3s;
 }
 
 .input-icon{
@@ -265,8 +307,30 @@ button:hover {
 
 .input-group input{
     width:100%;
-    padding-left:48px;
-    padding-right:55px;
+    height:56px;
+    padding:0 50px;
+    border:1px solid #dcdcdc;
+    border-radius:12px;
+    background:#fafafa;
+    font-size:15px;
+    transition:all .25s ease;
+    box-sizing:border-box;
+}
+.input-group input:hover{
+    border-color:#ff7900;
+}
+
+.input-group input:focus{
+    outline:none;
+    border-color:#ff7900;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(255,121,0,.12);
+}
+.input-group:focus-within .input-icon{
+    color:#ff7900;
+    transform:scale(1.1);
+    transition:.25s;
+    transform: translateY(-2px);
 }
 
 .login-footer{
@@ -316,14 +380,23 @@ button:hover {
 }
 
 .login-card{
-    width:460px;
-    padding:50px;
-    animation:slideInRight .8s ease;
-    transition: .35s;
+    width:100%;
+    max-width:470px;
+    background:#fff;
+    padding:45px;
+    border-radius:18px;
+    box-shadow:0 20px 60px rgba(0,0,0,.08);
+    transition:.3s;
 }
 .login-card:hover{
-    transform: translateY(-5px);
-    box-shadow: 0 30px 60px rgba(0,0,0,.12);
+    transform: translateY(-4px);
+    box-shadow: 0 30px 70px rgba(0,0,0,.12);
+}
+.login-card h2{
+    margin:0;
+    font-size: 32px;
+    font-weight: 700;
+    color:#222
 }
 .logo-square{
     transition:.4s;
@@ -369,6 +442,7 @@ button:hover {
     align-items:center;
     gap:10px;
     cursor:pointer;
+    width: 145px;
 }
 
 .copyright{
@@ -393,10 +467,54 @@ button:hover {
     }
 
 }
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(25px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.login-card{
+
+    animation:fadeUp .6s ease;
+
+}
 
 .brand{
 
     animation:fadeInLeft .8s ease;
+}
+
+.brand-features{
+
+    margin-top:40px;
+
+}
+
+.feature{
+
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:18px;
+    font-size:17px;
+
+}
+
+.feature i{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(255,255,255,.18);
+    font-size:18px;
+
 }
 
 @media (max-width: 992px){
@@ -411,6 +529,75 @@ button:hover {
     .login-card{
         width:100%;
         max-width:500px;
+    }
+
+}
+/* ==========================
+   TABLETTE
+========================== */
+
+@media (max-width: 992px){
+
+    .login-page{
+        flex-direction: column;
+    }
+
+    .login-left{
+        min-height: 280px;
+        padding: 40px 30px;
+    }
+
+    .brand{
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .brand-features{
+        display: none;
+    }
+
+    .login-right{
+        width: 100%;
+        padding: 30px;
+    }
+
+    .login-card{
+        max-width: 100%;
+    }
+
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media (max-width: 576px){
+
+    .login-left{
+        display: none;
+    }
+
+    .login-right{
+        padding: 20px;
+        min-height: 100vh;
+    }
+
+    .login-card{
+        padding: 30px 20px;
+        border-radius: 16px;
+        box-shadow: none;
+    }
+
+    .login-card h2{
+        font-size: 28px;
+    }
+
+    .subtitle{
+        font-size: 14px;
+    }
+
+    button[type="submit"]{
+        height: 52px;
     }
 
 }
