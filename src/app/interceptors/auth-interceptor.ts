@@ -1,5 +1,15 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { AUTH_TOKEN_KEY } from '../services/auth.service';
+
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  return next(req);
+  const token = sessionStorage.getItem(AUTH_TOKEN_KEY);
+  if (!token){
+    return next(req)
+  }
+  return next(req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`,
+    }
+  }));
 };

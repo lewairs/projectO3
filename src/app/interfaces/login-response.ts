@@ -1,5 +1,7 @@
 import { User} from './user'
 export interface LoginResponse {
-  access_token: string;
+  accessToken: string;
+  tokenType:'Bearer';
+  expiresIn: number;
   user: User;
 }

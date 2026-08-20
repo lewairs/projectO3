@@ -8,6 +8,7 @@ import { Projets } from './pages/projets/projets';
 import { Utilisateurs } from './pages/utilisateurs/utilisateurs';
 import { Parametres } from './pages/parametres/parametres';
 import { Login } from './features/auth/pages/login/login';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
 
@@ -22,7 +23,9 @@ export const routes: Routes = [
     },
     {
         path: 'dashboard',
-        component: Dashboard
+        component: Dashboard,
+        canActivate:[authGuard],
+        
     },
     {
         path: 'stagiaires',

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../../services/auth.service';
 import { LoginRequest } from '../../../../interfaces/login-request';
@@ -14,20 +16,20 @@ import { email } from '@angular/forms/signals';
   styleUrl: './login.css',
 })
 export class Login {
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
 
   loading = false;
   errorMessage = '';
+  showPassword = false;
+  isLoading = false;
 
   loginForm= this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
   });
 
-  showPassword = false;
-  isLoading = false;
 
 
   // constructor(private fb: FormBuilder){
@@ -56,28 +58,53 @@ export class Login {
     this.showPassword = !this.showPassword;
   }
 
-login(): void {
+  login(): void {
+  this.errorMessage = '';
   if (this.loginForm.invalid) {
     this.loginForm.markAllAsTouched();
     return;
   }
-  this.loading = true;
-  this.errorMessage = '';
-  this.authService.login(this.loginForm.value as any)
+  this.isLoading = true;
+  this.authService.login(this.loginForm.getRawValue())
+    .pipe(
+      finalize(()=>{
+      this.isLoading = false;
+      }),
+    )
     .subscribe({
       next: (response) => {
-        this.authService.saveToken(response.access_token);
-        this.loading = false;
-        this.router.navigate(['/dashboard']);
+        if(response.user.mustChangePassword){
+          void this.router.navigate(['/dashboard']);
+          return;
+        }
+        void this.router.navigate(['/dashboard']);
       },
 
-      error: (err) => {
-        this.loading = false;
-        this.errorMessage =
-          err.error?.message || 'Email ou mot de passe incorrect';
+      error: (error: HttpErrorResponse) => {
+        this.errorMessage = this.getErrorMessage(error);
+        },
+      });
+    }
+        // if(error.status === 0){
+        //   'Le backend es inaccessible. Vérifiez que le serveur fonctionne.';
+        //   return;
+        // }
+        // const message = error.error?.meassage;
+
+        // this.errorMessage = Array.isArray(message) ? message.join('') : message || 'Email ou mot de passe incorrect.';
+  
+    private getErrorMessage(error:HttpErrorResponse):string {
+      if(error.status === 0){
+        return 'Le serveur est inaccessible.verifiez que le backend fonctionne.'
       }
-    });
+      const backendMessage = error.error?.message;
+      if(Array.isArray(backendMessage)){
+        return backendMessage.join('')
+      }
+      if(typeof backendMessage === 'string'){
+        return backendMessage;
+      }
+      return 'Une erreur est survenue pendant la connextion';
+    }
 }
 
-
-}
