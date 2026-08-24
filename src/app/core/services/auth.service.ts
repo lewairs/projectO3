@@ -2,12 +2,10 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable,tap } from 'rxjs';
 
-import { environment } from '../../environments/environment';
-// import { LoginRequest } from '../interfaces/login-request';
-// import { LoginResponse } from '../interfaces/login-response';
-import { AuthUser, LoginRequest, LoginResponse} from '../interfaces/login.interface';
-
-import { User } from '../interfaces/user';
+import { environment } from '../../../environments/environment';
+import { LoginRequest } from '../../interfaces/login-request';
+import { LoginResponse } from '../../interfaces/login-response';
+import { User } from '../../interfaces/user';
 
 export const AUTH_TOKEN_KEY = 'access_token';
 export const AUTH_USER_KEY = 'auth_user';

@@ -112,8 +112,8 @@
                     </label>
                 </div>
 
-                <button type="submit" [disabled]="loading">
-                    @if (loading) {
+                <button type="submit" [disabled]="isLoading">
+                    @if (isLoading) {
                         <i class="fa-solid fa-spinner fa-spin"></i>
                         Connexion...
                     } @else {

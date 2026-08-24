@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LayoutService } from '../../services/layout.service';
+import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-sidebar',

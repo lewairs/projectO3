@@ -1,27 +1,23 @@
-import { Component, signal, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { Header } from '../../layout/header/header';
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
-import { LayoutService} from '../../services/layout.service'
+import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-main-layout',
   imports: [RouterOutlet, Header, Sidebar],
   templateUrl: './main-layout.html',
-  styleUrl: './main-layout.css',
+  styleUrl: './main-layout.css'
 })
 export class MainLayout {
-  constructor(public layoutService: LayoutService){}
-
-  private router = inject(Router);
 
   sidebarOpened = signal(true);
 
-   toggleSidebar() {
+  constructor(public layoutService: LayoutService) {}
+
+  toggleSidebar() {
     this.sidebarOpened.update(v => !v);
   }
-
-  isLoginPage(): boolean {
-    return this.router.url === '/login';}
-  
 }

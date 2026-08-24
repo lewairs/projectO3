@@ -1,22 +1,17 @@
 <div class="layout">
 
-    @if(!isLoginPage()){
-        <app-header></app-header>
+  <app-header></app-header>
+
+  <div class="body">
+
+    @if (layoutService.sidebarOpened()) {
+      <app-sidebar></app-sidebar>
     }
 
-    <div class="body">
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
 
-        @if(!isLoginPage() && layoutService.sidebarOpened()){
-            <app-sidebar></app-sidebar>
-
-        }
-
-        <main class="content">
-
-            <router-outlet></router-outlet>
-
-        </main>
-
-    </div>
+  </div>
 
 </div>

@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
 
-import { AuthService } from '../../../../services/auth.service';
-import { LoginRequest } from '../../../../interfaces/login-request';
+import { AuthService } from '../../../../core/services/auth.service';
+// import { LoginRequest } from '../../../interfaces/login-request';
 import { email } from '@angular/forms/signals';
 @Component({
   selector: 'app-login',
@@ -20,14 +20,17 @@ export class Login {
   private authService = inject(AuthService);
   private router = inject(Router);
 
-  loading = false;
+  isLoading = false;
   errorMessage = '';
   showPassword = false;
-  isLoading = false;
 
   loginForm= this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    password: ['',[
+      Validators.required,
+      Validators.minLength(8),
+    ],
+  ],
   });
 
 

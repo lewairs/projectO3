@@ -1,0 +1,116 @@
+.accueil {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.accueil-header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 60px;
+  border-bottom: 1px solid #eeeeee;
+  background: #ffffff;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.navigation {
+  display: flex;
+  gap: 30px;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #333333;
+}
+
+.btn-connexion,
+.btn-principal {
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+}
+
+
+/* =========================
+   HERO
+   ========================= */
+
+.hero {
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  background: #f5f7fa;
+}
+
+.hero-content {
+  max-width: 800px;
+}
+
+.hero-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.hero h1 {
+  margin: 20px 0;
+  font-size: 48px;
+  line-height: 1.2;
+}
+
+.hero p {
+  margin-bottom: 30px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+
+/* =========================
+   PRESENTATION
+   ========================= */
+
+.presentation {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.presentation h2,
+.contact h2 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+
+/* =========================
+   CONTACT
+   ========================= */
+
+.contact {
+  padding: 80px 20px;
+  text-align: center;
+  background: #f5f7fa;
+}
+
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.footer {
+  padding: 25px;
+  text-align: center;
+  border-top: 1px solid #eeeeee;
+}
