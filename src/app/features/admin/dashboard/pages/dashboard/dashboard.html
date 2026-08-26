@@ -1,0 +1,49 @@
+<div class="dashboard">
+    <div class="page-header">
+        <div>
+            <span class="eyebrow">ADMINISTRATION</span>
+            <h1>Tableau de bord</h1>
+            <p>Pilotez les stages, les équipes et les activités de la plateforme.</p>
+        </div>
+        <a class="primary-action" routerLink="/dashboard/stagiaires">
+            <i class="fa-solid fa-plus"></i>
+            Ajouter un stagiaire
+        </a>
+    </div>
+
+    <div class="section-heading">
+        <div>
+            <h2>Vue d’ensemble</h2>
+            <p>Les indicateurs clés de votre activité.</p>
+        </div>
+        <span class="live-status"><i class="fa-solid fa-circle"></i> Données actualisées</span>
+    </div>
+
+    <div class="stats-grid">
+
+        @for(card of stats; track card.title){
+
+            <app-stats-card
+                [title]="card.title"
+                [value]="card.value"
+                [subtitle]="card.subtitle"
+                [icon]="card.icon">
+            </app-stats-card>
+        }
+
+    </div>
+    <section class="dashboard-content" aria-label="Synthèse administrative">
+
+        <app-recent-interns></app-recent-interns>
+
+        <app-quick-actions></app-quick-actions>
+
+    </section>
+    
+    <section class="recent-activity-section" aria-label="Activité récente">
+
+        <app-recent-activity></app-recent-activity>
+
+    </section>
+
+</div>

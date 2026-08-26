@@ -1,0 +1,10 @@
+{
+  "/backend": {
+    "target": "http://10.175.2.68:3000",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/backend": ""
+    }
+  }
+}

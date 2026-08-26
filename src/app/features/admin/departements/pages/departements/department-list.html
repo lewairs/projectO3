@@ -1,0 +1,118 @@
+<section class="departments-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Organisation</p>
+      <h1>Départements</h1>
+      <p>Gérez les structures actives de l’entreprise.</p>
+    </div>
+    @if (can('departments.create')) {
+      <button class="primary" type="button" (click)="openCreateForm()">
+        <i class="fa-solid fa-plus"></i>
+        Ajouter un département
+      </button>
+    }
+  </header>
+
+  <div class="toolbar">
+    <label for="department-search">Rechercher</label>
+    <input
+      id="department-search"
+      type="search"
+      placeholder="Code, nom ou description"
+      [value]="search()"
+      (input)="updateSearch($event)"
+    />
+  </div>
+
+  @if (errorMessage()) {
+    <div class="message error" role="alert">
+      {{ errorMessage() }}
+      <button type="button" (click)="loadDepartements()">Réessayer</button>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="message">Chargement des départements…</div>
+  } @else if (filteredDepartements().length === 0) {
+    <div class="message">Aucun département actif trouvé.</div>
+  } @else {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th class="actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (departement of filteredDepartements(); track departement.id) {
+            <tr>
+              <td><strong>{{ departement.code }}</strong></td>
+              <td>{{ departement.name }}</td>
+              <td>{{ departement.description || '—' }}</td>
+              <td class="actions">
+                @if (can('departments.update')) {
+                  <button type="button" (click)="openEditForm(departement)">
+                    Modifier
+                  </button>
+                }
+                @if (can('departments.deactivate')) {
+                  <button
+                    class="danger"
+                    type="button"
+                    (click)="deactivate(departement)"
+                  >
+                    Désactiver
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+@if (formOpen()) {
+  <div class="modal-backdrop" (click)="closeForm()">
+    <section
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="department-form-title"
+      (click)="$event.stopPropagation()"
+    >
+      <header>
+        <h2 id="department-form-title">
+          {{ editing() ? 'Modifier le département' : 'Ajouter un département' }}
+        </h2>
+        <button type="button" aria-label="Fermer" (click)="closeForm()">×</button>
+      </header>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label for="code">Code</label>
+        <input id="code" formControlName="code" maxlength="20" />
+
+        <label for="name">Nom</label>
+        <input id="name" formControlName="name" maxlength="150" />
+
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description" rows="4"></textarea>
+
+        @if (errorMessage()) {
+          <div class="message error" role="alert">{{ errorMessage() }}</div>
+        }
+
+        <footer>
+          <button type="button" (click)="closeForm()">Annuler</button>
+          <button class="primary" type="submit" [disabled]="saving()">
+            {{ saving() ? 'Enregistrement…' : 'Enregistrer' }}
+          </button>
+        </footer>
+      </form>
+    </section>
+  </div>
+}

@@ -1,0 +1,23 @@
+.departments-page { padding: 1.5rem; }
+.page-header { display: flex; justify-content: space-between; gap: 1rem; align-items: start; margin-bottom: 1.5rem; }
+.page-header h1 { margin: 0.2rem 0; }
+.eyebrow { margin: 0; color: #f16e00; font-weight: 700; }
+.toolbar { display: grid; gap: 0.35rem; max-width: 28rem; margin-bottom: 1rem; }
+input, textarea { padding: 0.7rem; border: 1px solid #bbb; border-radius: 0.35rem; font: inherit; }
+button { padding: 0.55rem 0.8rem; border: 1px solid #aaa; border-radius: 0.35rem; background: #fff; cursor: pointer; }
+button.primary { border-color: #f16e00; color: #fff; background: #f16e00; font-weight: 700; }
+button.danger { color: #a40000; border-color: #d9a1a1; }
+button:disabled { opacity: 0.6; cursor: wait; }
+.message { padding: 1rem; border-radius: 0.4rem; background: #f3f3f3; }
+.message.error { color: #8a0000; background: #ffecec; }
+.table-wrapper { overflow-x: auto; border: 1px solid #ddd; border-radius: 0.5rem; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 0.85rem; border-bottom: 1px solid #e5e5e5; text-align: left; }
+th { background: #f6f6f6; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 1rem; background: rgb(0 0 0 / 55%); }
+.modal { width: min(100%, 34rem); padding: 1.5rem; border-radius: 0.6rem; background: #fff; }
+.modal > header { display: flex; justify-content: space-between; align-items: center; }
+.modal form { display: grid; gap: 0.65rem; }
+.modal footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem; }
+@media (max-width: 700px) { .page-header { flex-direction: column; } }

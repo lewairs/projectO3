@@ -1,90 +1,111 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable,tap } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import {
+  Observable,
+  catchError,
+  finalize,
+  map,
+  of,
+  switchMap,
+  tap,
+  timeout,
+} from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import { APP_ENVIRONMENT } from '../config/api.config';
+import { AuthenticatedUser } from '../../interfaces/user';
 import { LoginRequest } from '../../interfaces/login-request';
-import { LoginResponse } from '../../interfaces/login-response';
-import { User } from '../../interfaces/user';
+import {
+  LoginResponse,
+  RefreshResponse,
+} from '../../interfaces/login-response';
+import {
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+} from '../../interfaces/change-password.interface';
+import { AuthStateService } from './auth-state.service';
+import { MockAuthService } from './mock-auth.service';
 
-export const AUTH_TOKEN_KEY = 'access_token';
-export const AUTH_USER_KEY = 'auth_user';
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-
-  private http = inject(HttpClient);
-
-  private apiUrl = `${environment.apiBaseUrl}/auth`;
+  private readonly http = inject(HttpClient);
+  private readonly environment = inject(APP_ENVIRONMENT);
+  private readonly state = inject(AuthStateService);
+  private readonly mockAuthService = inject(MockAuthService);
+  private readonly apiUrl = `${this.environment.apiBaseUrl}/auth`;
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(
-      `${this.apiUrl}/login`,
-      credentials).pipe(tap((response)=>{
-        sessionStorage.setItem(AUTH_TOKEN_KEY,response.accessToken);
+    if (this.environment.demoMode) {
+      return this.mockAuthService.login(credentials).pipe(
+        tap((response) =>
+          this.state.setSession(response.accessToken, response.user),
+        ),
+      );
+    }
 
-        sessionStorage.setItem(AUTH_USER_KEY, JSON.stringify(response.user));
+    return this.http
+      .post<LoginResponse>(`${this.apiUrl}/login`, credentials, {
+        withCredentials: true,
+      })
+      .pipe(
+        tap((response) =>
+          this.state.setSession(response.accessToken, response.user),
+        ),
+      );
+  }
+
+  refresh(): Observable<RefreshResponse> {
+    return this.http
+      .post<RefreshResponse>(`${this.apiUrl}/refresh`, {}, {
+        withCredentials: true,
+      })
+      .pipe(tap((response) => this.state.setAccessToken(response.accessToken)));
+  }
+
+  getProfile(): Observable<AuthenticatedUser> {
+    return this.http
+      .get<AuthenticatedUser>(`${this.apiUrl}/me`, { withCredentials: true })
+      .pipe(tap((user) => this.state.setUser(user)));
+  }
+
+  initialize(): Observable<void> {
+    if (this.environment.demoMode) {
+      this.state.markInitialized();
+      return of(undefined);
+    }
+
+    return this.refresh().pipe(
+      timeout({ first: 5000 }),
+      switchMap(() => this.getProfile()),
+      map(() => undefined),
+      catchError(() => {
+        this.state.clear();
+        return of(undefined);
       }),
+      finalize(() => this.state.markInitialized()),
     );
   }
 
-    // saveToken(token: string): void {
-    //     localStorage.setItem('access_token', token);
-    // }
+  changePassword(
+    request: ChangePasswordRequest,
+  ): Observable<ChangePasswordResponse> {
+    return this.http.patch<ChangePasswordResponse>(
+      `${this.apiUrl}/change-password`,
+      request,
+    );
+  }
 
-    getProfile():Observable<User>{
-      return this.http.get<User>(`${this.apiUrl}/me`);
+  logout(): Observable<void> {
+    if (this.environment.demoMode) {
+      this.state.clear();
+      return of(undefined);
     }
 
-    getAccesToken(): string | null {
-        return sessionStorage.getItem(AUTH_TOKEN_KEY);
-    }
-
-    getCurrentUser(): User | null {
-      const storedUser = sessionStorage.getItem(AUTH_USER_KEY);
-      if(!storedUser){
-        return null;
-      }
-      try{
-        return JSON.parse(storedUser) as User;
-      } catch {
-        return null;
-      }
-    }
-
-    isAuthenticated():boolean{
-      const token = this.getAccesToken();
-      if(!token){
-        return false;
-      } try{
-        const encodePayload = token.split('.')[1]
-          .replace(/-/g, '+')
-          .replace(/_/g, '+');
-        const paddedPayload = encodePayload.padEnd(
-          Math.ceil(encodePayload.length/4)*4,'='
-        );
-        const payload = JSON.parse(atob(paddedPayload)) as {
-          exp?:number;
-        };
-
-        return(
-          typeof payload.exp === 'number' && payload.exp* 1000 > Date.now()
-        );
-      } catch {
-        return false;
-      }
-
-    }
-
-    logout(): void {
-        sessionStorage.removeItem(AUTH_TOKEN_KEY);
-        sessionStorage.removeItem(AUTH_USER_KEY);
-    }
-
-    // isLoggedIn(): boolean {
-    //     return this.getToken() !== null;
-    // }
-
+    return this.http
+      .post<unknown>(`${this.apiUrl}/logout`, {}, { withCredentials: true })
+      .pipe(
+        map(() => undefined),
+        catchError(() => of(undefined)),
+        finalize(() => this.state.clear()),
+      );
+  }
 }

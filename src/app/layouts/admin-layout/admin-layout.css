@@ -1,0 +1,21 @@
+.layout {
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    overflow:hidden;
+}
+
+.body {
+
+    display:flex;
+    flex:1;
+    min-height:0;
+}
+
+.content {
+
+    flex:1;
+    min-width:0;
+    overflow:auto;
+    background:#f4f6fa;
+}

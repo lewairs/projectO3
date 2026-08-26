@@ -132,6 +132,22 @@
   box-shadow: 0 20px 45px rgba(0,0,0,.08);
 }
 
+.mobile-brand {
+    display:none;
+    align-items:center;
+    gap:12px;
+    margin-bottom:24px;
+    color:#222;
+    font-size:18px;
+    font-weight:700;
+}
+
+.mobile-brand img {
+    width:48px;
+    height:48px;
+    object-fit:cover;
+}
+
 .login-card h2 {
   font-size: 36px;
   margin-bottom: 10px;
@@ -536,6 +552,10 @@ button:hover {
     .login-card{
         width:100%;
         max-width:500px;
+    }
+
+    .mobile-brand{
+        display:flex;
     }
 
 }

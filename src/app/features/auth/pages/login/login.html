@@ -10,7 +10,7 @@
 
             <div class="logo">
                 <img
-                    src="assets/images/orange-logo.png"
+                    src="/images/orange_logo.jpg"
                     alt="Orange Mali">
             </div>
 
@@ -45,8 +45,18 @@
 
     <div class="login-right">
         <div class="login-card">
+            <div class="mobile-brand">
+                <img src="/images/orange_logo.jpg" alt="Orange Mali">
+                <span>Orange Mali</span>
+            </div>
             <h2>Connexion</h2>
             <p class="subtitle">Entrez vos informations de connexion.</p>
+
+            @if (demoMode) {
+                <div class="login-error" role="status">
+                    Mode démonstration — admin@test.com / Test@123456
+                </div>
+            }
 
             <form [formGroup]="loginForm" (ngSubmit)="login()">
                 @if(errorMessage){
@@ -105,13 +115,6 @@
                     }
                 </div>
 
-                <div class="remember-me">
-                    <label>
-                        <input type="checkbox">
-                        Se souvenir de moi
-                    </label>
-                </div>
-
                 <button type="submit" [disabled]="isLoading">
                     @if (isLoading) {
                         <i class="fa-solid fa-spinner fa-spin"></i>
@@ -121,13 +124,6 @@
                     }
                 </button>
 
-                <div class="error-message" *ngIf="errorMessage">
-                    {{ errorMessage }}
-                </div>
-
-                <div class="login-links">
-                    <a href="#">Mot de passe oublié ?</a>
-                </div>
             </form>
         </div>
 

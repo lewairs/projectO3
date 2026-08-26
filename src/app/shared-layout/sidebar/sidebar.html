@@ -1,0 +1,34 @@
+<div class="sidebar">
+  <div class="menu-scroll">
+    <p class="menu-label">{{ sectionLabel() }}</p>
+    <nav aria-label="Navigation principale">
+
+    @for(item of visibleMenuItems(); track item.route){
+      <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact ?? false }">
+        <i [class]="item.icon"></i>
+        <span>{{item.label}}</span>
+      </a>
+    }
+    </nav>
+
+    @if (visibleAdministrationItems().length) {
+      <div class="admin-menu">
+        <p class="menu-label">ADMINISTRATION</p>
+    @for(item of visibleAdministrationItems(); track item.route){
+      <a [routerLink]="item.route" routerLinkActive="active">
+        <i [class]="item.icon"></i>
+        <span>{{item.label}}</span>
+      </a>
+    }
+      </div>
+    }
+  </div>
+
+  <div class="help-card">
+    <span class="help-icon"><i class="fa-regular fa-circle-question"></i></span>
+    <div>
+      <strong>Besoin d’aide ?</strong>
+      <p>Contactez l’administrateur de la plateforme.</p>
+    </div>
+  </div>
+</div>
