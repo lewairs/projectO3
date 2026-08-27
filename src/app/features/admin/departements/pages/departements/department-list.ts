@@ -116,9 +116,22 @@ export class DepartmentList implements OnInit {
     this.saving.set(true);
     this.errorMessage.set('');
     operation.pipe(finalize(() => this.saving.set(false))).subscribe({
-      next: () => {
+      next: (savedDepartment) => {
+        this.departements.update((items) => {
+          const departmentExists = items.some(
+            (item) => item.id === savedDepartment.id,
+          );
+          const updatedItems = departmentExists
+            ? items.map((item) =>
+                item.id === savedDepartment.id ? savedDepartment : item,
+              )
+            : [...items, savedDepartment];
+
+          return updatedItems.sort((first, second) =>
+            first.name.localeCompare(second.name, 'fr'),
+          );
+        });
         this.closeForm();
-        this.loadDepartements();
       },
       error: (error: HttpErrorResponse) =>
         this.errorMessage.set(this.extractError(error)),
