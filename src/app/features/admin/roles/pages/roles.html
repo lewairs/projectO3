@@ -10,14 +10,16 @@
   } @else if (filteredRoles().length === 0) {
     <div class="message">Aucun rôle actif trouvé.</div>
   } @else {
-    <div class="table-wrapper"><table><thead><tr><th>Nom</th><th>Description</th><th class="actions">Actions</th></tr></thead><tbody>
-      @for (role of filteredRoles(); track role.id) {
-        <tr><td><strong>{{ role.name }}</strong></td><td>{{ role.description || '—' }}</td><td class="actions">
-          @if (can('roles.update')) { <button type="button" (click)="openEditForm(role)">Modifier</button> }
-          @if (can('roles.deactivate')) { <button class="danger" type="button" (click)="deactivate(role)">Désactiver</button> }
+    <div class="table-wrapper"><table><thead><tr><th>Nom</th><th>Description</th><th>Permissions</th><th class="actions">Actions</th></tr></thead><tbody>
+      @for (role of pagedRoles(); track role.id) {
+        <tr><td><strong>{{ role.name }}</strong></td><td>{{ role.description || '—' }}</td><td>{{ role.permissions.length }}</td><td class="actions">
+          <button class="icon-button view" type="button" title="Voir les permissions" aria-label="Voir les permissions" (click)="openPermissions(role,true)"><i class="fa-regular fa-eye"></i></button>
+          @if (can('roles.update')) { <button class="icon-button edit" type="button" title="Modifier" aria-label="Modifier" (click)="openEditForm(role)"><i class="fa-solid fa-pen"></i></button> }
+          @if (can('roles.permissions.manage') && can('permissions.read')) { <button class="icon-button permissions" type="button" title="Gérer les permissions" aria-label="Gérer les permissions" (click)="openPermissions(role,false)"><i class="fa-solid fa-shield-halved"></i></button> }
+          @if (can('roles.deactivate')) { <button class="icon-button danger" type="button" title="Désactiver" aria-label="Désactiver" (click)="deactivate(role)"><i class="fa-solid fa-ban"></i></button> }
         </td></tr>
       }
-    </tbody></table></div>
+    </tbody></table></div><footer class="pagination"><span>{{ filteredRoles().length }} résultat(s)</span><label><span>Par page</span><select [value]="pageSize()" (change)="updatePageSize($event)"><option value="10">10</option><option value="20">20</option><option value="50">50</option></select></label><button type="button" [disabled]="page()===1" (click)="previousPage()"><i class="fa-solid fa-chevron-left"></i></button><strong>Page {{ page() }} / {{ totalPages() }}</strong><button type="button" [disabled]="page()===totalPages()" (click)="nextPage()"><i class="fa-solid fa-chevron-right"></i></button></footer>
   }
 </section>
 @if (formOpen()) {
@@ -28,4 +30,7 @@
       <footer><button type="button" (click)="closeForm()">Annuler</button><button class="primary" type="submit" [disabled]="saving()">{{ saving() ? 'Enregistrement…' : 'Enregistrer' }}</button></footer>
     </form>
   </section></div>
+}
+@if (permissionsOpen() && selectedRole(); as role) {
+  <div class="modal-backdrop" (click)="closePermissions()"><section class="modal permissions-modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()"><header><div><p class="eyebrow">{{ permissionsReadOnly() ? 'CONSULTATION' : 'AUTORISATIONS' }}</p><h2>{{ role.name }}</h2></div><button type="button" aria-label="Fermer" (click)="closePermissions()">×</button></header><div class="permission-groups">@for (group of permissionGroups(); track group.category) { <fieldset><legend>{{ group.category }}</legend>@for (permission of group.permissions; track permission.id) { <label><input type="checkbox" [checked]="isPermissionSelected(permission.id)" [disabled]="permissionsReadOnly()" (change)="togglePermission(permission.id)"><span><strong>{{ permission.name }}</strong><small>{{ permission.code }}</small></span></label> }</fieldset> }</div>@if (errorMessage()) { <div class="message error">{{ errorMessage() }}</div> }<footer><button type="button" (click)="closePermissions()">Fermer</button>@if (!permissionsReadOnly()) { <button class="primary" type="button" [disabled]="saving()" (click)="savePermissions()">Enregistrer les permissions</button> }</footer></section></div>
 }

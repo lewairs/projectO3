@@ -25,32 +25,37 @@ export class Sidebar {
       permission: 'dashboard.read',
       exact: true,
     },
-
+    { label: 'Stagiaires', icon: 'fa-solid fa-user-graduate', route: '/dashboard/stagiaires', permission: 'interns.read' },
+    { label: 'Stages', icon: 'fa-solid fa-briefcase', route: '/dashboard/stages', permission: 'internships.read' },
+    { label: 'Suivi des stages', icon: 'fa-solid fa-chart-line', route: '/dashboard/suivi-stages', permission: 'internships.read' },
     {
       label: 'Départements',
       icon: 'fa-solid fa-building',
       route: '/dashboard/departements',
       permission: 'departments.read',
     },
-
+    { label: 'Encadreurs', icon: 'fa-solid fa-user-tie', route: '/dashboard/encadreurs', permission: 'supervisors.read' },
+    { label: 'Autorités de tutelle', icon: 'fa-solid fa-landmark', route: '/dashboard/autorites', permission: 'authorities.read' },
+    { label: 'Projets', icon: 'fa-solid fa-folder-open', route: '/dashboard/projets', permission: 'projects.read' },
+    { label: 'Affectations', icon: 'fa-solid fa-diagram-project', route: '/dashboard/affectations', permission: 'project-assignments.read' },
   ];
 
   private readonly administrationItems: MenuItem[] = [
-
+    { label: 'Postes', icon: 'fa-solid fa-id-badge', route: '/dashboard/postes', permission: 'positions.read' },
     {
       label: 'Employés',
       icon: 'fa-solid fa-users',
       route: '/dashboard/employes',
       permission: 'employees.read',
     },
-
+    { label: 'Utilisateurs', icon: 'fa-solid fa-user-lock', route: '/dashboard/utilisateurs', permission: 'users.read' },
     {
       label: 'Rôles',
       icon: 'fa-solid fa-user-shield',
       route: '/dashboard/roles',
       permission: 'roles.read',
     },
-
+    { label: 'Journal d’audit', icon: 'fa-solid fa-clock-rotate-left', route: '/dashboard/journal-audit', permission: 'audit-logs.read' },
     {
       label: 'Paramètres',
       icon: 'fa-solid fa-gear',
@@ -66,9 +71,10 @@ export class Sidebar {
   });
 
   readonly visibleAdministrationItems = computed(() => {
-    if (this.role() !== 'ADMINISTRATEUR') return [];
     return this.administrationItems.filter(
-      (item) => !item.permission || this.authState.hasPermission(item.permission),
+      (item) => item.route === '/dashboard/parametres'
+        ? this.role() === 'ADMINISTRATEUR'
+        : !item.permission || this.authState.hasPermission(item.permission),
     );
   });
 }

@@ -5,6 +5,9 @@
     "changeOrigin": true,
     "pathRewrite": {
       "^/backend": ""
+    },
+    "cookiePathRewrite": {
+      "/auth": "/backend/auth"
     }
   }
 }

@@ -31,7 +31,9 @@ export class Header {
   readonly roleLabel = computed(() => {
     const labels: Record<string, string> = {
       ADMINISTRATEUR: 'Administrateur',
-      ENCADRANT: 'Encadrant',
+      ENCADREUR: 'Encadreur',
+      RH: 'Ressources humaines',
+      DIRECTION: 'Direction',
       STAGIAIRE: 'Stagiaire',
     };
     const role = this.user()?.role ?? '';

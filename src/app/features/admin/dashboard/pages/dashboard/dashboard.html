@@ -3,11 +3,11 @@
         <div>
             <span class="eyebrow">ADMINISTRATION</span>
             <h1>Tableau de bord</h1>
-            <p>Administrez les référentiels réellement exposés par le backend.</p>
+            <p>Suivez les indicateurs et l’activité réellement exposés par le backend.</p>
         </div>
-        <a class="primary-action" routerLink="/dashboard/employes">
+        <a class="primary-action" routerLink="/dashboard/stagiaires">
             <i class="fa-solid fa-plus"></i>
-            Ajouter un employé
+            Ajouter un stagiaire
         </a>
     </div>
 
@@ -40,7 +40,14 @@
     <section class="dashboard-content" aria-label="Synthèse administrative">
 
         <app-quick-actions></app-quick-actions>
-        <div class="availability-card"><h2>Périmètre backend actif</h2><p>Authentification, départements, employés et rôles sont les modules actuellement disponibles et sécurisés.</p></div>
+        <div class="availability-card"><h2>Activité récente</h2>@if (dashboard()?.recentActivities?.length) { @for (activity of dashboard()!.recentActivities; track activity.id) { <div class="activity"><strong>{{ activity.action }} · {{ activity.resource }}</strong><span>{{ activity.entityLabel || 'Élément non renseigné' }}</span><small>{{ activity.actor?.fullName || 'Système' }} · {{ formatDate(activity.occurredAt) }}</small></div> } } @else { <p>Aucune activité récente.</p> }</div>
     </section>
+
+    @if (dashboard(); as data) {
+      <section class="dashboard-tables">
+        <article class="data-card"><header><h2>Derniers stagiaires</h2><a routerLink="/dashboard/stagiaires">Voir tout</a></header><div class="table-scroll"><table><thead><tr><th>Matricule</th><th>Stagiaire</th><th>Département</th><th>Statut</th></tr></thead><tbody>@for (intern of data.recentInterns; track intern.id) { <tr><td>{{ intern.registrationCode }}</td><td>{{ intern.fullName }}</td><td>{{ intern.latestInternship?.department?.name || '—' }}</td><td>{{ intern.latestInternship?.status || 'Sans stage' }}</td></tr> }</tbody></table></div></article>
+        <article class="data-card"><header><h2>Suivi des stages</h2><a routerLink="/dashboard/suivi-stages">Voir tout</a></header><div class="table-scroll"><table><thead><tr><th>Stagiaire</th><th>Stage</th><th>Encadreur</th><th>Projet</th><th>Statut</th></tr></thead><tbody>@for (tracking of data.internshipTracking; track tracking.id) { <tr><td>{{ tracking.intern.fullName }}</td><td>{{ tracking.title }}</td><td>{{ tracking.supervisor.fullName }}</td><td>{{ tracking.project?.name || '—' }}</td><td>{{ tracking.status }}</td></tr> }</tbody></table></div></article>
+      </section>
+    }
 
 </div>

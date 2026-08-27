@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { APP_ENVIRONMENT } from '../../../../core/config/api.config';
-import { CreateRoleRequest, Role, UpdateRoleRequest } from '../interfaces/role.model';
+import { CreateRoleRequest, Permission, Role, UpdateRoleRequest } from '../interfaces/role.model';
 
 @Injectable({ providedIn: 'root' })
 export class RoleService {
@@ -17,6 +17,14 @@ export class RoleService {
 
   getById(id: string): Observable<Role> {
     return this.http.get<Role>(`${this.apiUrl}/${id}`);
+  }
+
+  getPermissions(): Observable<Permission[]> {
+    return this.http.get<Permission[]>(`${this.environment.apiBaseUrl}/permissions`);
+  }
+
+  updatePermissions(id: string, permissionIds: string[]): Observable<Role> {
+    return this.http.put<Role>(`${this.apiUrl}/${id}/permissions`, { permissionIds });
   }
 
   create(request: CreateRoleRequest): Observable<Role> {

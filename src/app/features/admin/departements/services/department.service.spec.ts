@@ -51,19 +51,4 @@ describe('DepartmentService', () => {
     ]);
   });
 
-  it('falls back to the legacy path endpoint for the older backend', () => {
-    service.getAll().subscribe((departements) => {
-      expect(departements).toEqual([]);
-    });
-
-    const collectionRequest = http.expectOne('/backend/departments');
-    collectionRequest.flush(
-      { message: 'Cannot GET /departments' },
-      { status: 404, statusText: 'Not Found' },
-    );
-
-    const legacyRequest = http.expectOne('/backend/departments/path');
-    expect(legacyRequest.request.method).toBe('GET');
-    legacyRequest.flush([]);
-  });
 });

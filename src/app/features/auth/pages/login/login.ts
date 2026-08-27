@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../../core/services/auth.service';
+import { homeUrlFor } from '../../../../core/auth/auth-navigation';
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, CommonModule],
@@ -71,10 +72,7 @@ export class Login {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (response) => {
-          let target = '/accueil';
-          if (response.user.role === 'ADMINISTRATEUR') target = '/dashboard';
-          if (response.user.mustChangePassword) target = '/changer-mot-de-passe';
-          void this.router.navigate([target], { replaceUrl: true });
+          void this.router.navigateByUrl(homeUrlFor(response.user), { replaceUrl: true });
         },
         error: (error: HttpErrorResponse) => {
           this.errorMessage = this.getErrorMessage(error);

@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthStateService } from '../services/auth-state.service';
+import { homeUrlFor } from '../auth/auth-navigation';
 
 export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
   return () => {
@@ -20,6 +21,6 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
     }
 
     // Utilisateur connecté mais rôle non autorisé
-    return router.createUrlTree(['/accueil']);
+    return router.parseUrl(homeUrlFor(user));
   };
 };

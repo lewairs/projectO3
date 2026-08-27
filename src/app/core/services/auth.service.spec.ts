@@ -52,6 +52,8 @@ describe('AuthService', () => {
         jobTitle: 'Administratrice',
         department: null,
         role: 'ADMINISTRATEUR',
+        position: null,
+        permissions: ['dashboard.read'],
         mustChangePassword: false,
       },
     };
@@ -59,7 +61,7 @@ describe('AuthService', () => {
     service.login({ email: 'awa@example.com', password: 'password' }).subscribe();
 
     const request = http.expectOne('/backend/auth/login');
-    expect(request.request.withCredentials).toBe(false);
+    expect(request.request.withCredentials).toBe(true);
     request.flush(response);
 
     expect(state.accessToken()).toBe('access-token');
@@ -86,6 +88,8 @@ describe('AuthService', () => {
       jobTitle: 'Administratrice',
       department: null,
       role: 'ADMINISTRATEUR',
+      position: null,
+      permissions: ['dashboard.read'],
       mustChangePassword: false,
       lastLoginAt: '2026-08-26T16:00:00.000Z',
     });
@@ -95,7 +99,7 @@ describe('AuthService', () => {
     expect(state.initialized()).toBe(true);
   });
 
-  it('logs out locally without calling a backend endpoint', () => {
+  it('revokes the backend session and clears the local session', () => {
     state.setSession('access-token', {
       id: 'user-id',
       employeeId: 'employee-id',
@@ -112,6 +116,10 @@ describe('AuthService', () => {
     });
 
     service.logout().subscribe();
+
+    const request = http.expectOne('/backend/auth/logout');
+    expect(request.request.withCredentials).toBe(true);
+    request.flush(null);
 
     expect(state.accessToken()).toBeNull();
     expect(state.user()).toBeNull();

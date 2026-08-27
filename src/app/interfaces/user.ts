@@ -20,9 +20,11 @@ export interface BackendUser {
   lastName: string;
   email: string;
   phone?: string | null;
-  jobTitle: string;
+  jobTitle?: string | null;
+  position?: PositionSummary | null;
   department: DepartmentSummary | null;
   role: BackendRole;
+  permissions?: string[];
   mustChangePassword: boolean;
   lastLoginAt?: string | null;
 }

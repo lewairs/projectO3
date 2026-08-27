@@ -15,7 +15,7 @@ describe('Roles', () => {
       providers: [
         {
           provide: RoleService,
-          useValue: { getAll: () => of([]) },
+          useValue: { getAll: () => of([]), getPermissions: () => of([]) },
         },
         {
           provide: AuthStateService,

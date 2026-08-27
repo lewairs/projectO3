@@ -16,7 +16,13 @@ describe('Dashboard', () => {
         provideRouter([]),
         {
           provide: DashboardService,
-          useValue: { getStats: () => of([]) },
+          useValue: {
+            getDashboard: () => of({
+              generatedAt: '2026-08-27T00:00:00.000Z',
+              summary: { activeInterns: 0, internsAddedThisMonth: 0, activeInternships: 0, ongoingInternships: 0, activeProjects: 0, ongoingProjects: 0, activeSupervisors: 0, activeDepartments: 0 },
+              statusBreakdown: {}, recentInterns: [], internshipTracking: [], recentActivities: [],
+            }),
+          },
         },
       ],
     }).compileComponents();

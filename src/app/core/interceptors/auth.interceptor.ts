@@ -14,6 +14,7 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const token = inject(AuthStateService).accessToken();
   return next(
     request.clone({
+      withCredentials: true,
       setHeaders: token ? { Authorization: `Bearer ${token}` } : {},
     }),
   );

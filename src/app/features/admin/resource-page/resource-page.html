@@ -1,0 +1,120 @@
+<section class="resource-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">{{ config().eyebrow }}</p>
+      <h1>{{ config().title }}</h1>
+      <p>{{ config().description }}</p>
+    </div>
+    @if (!config().readOnly && can('create')) {
+      <button class="primary" type="button" (click)="openCreateModal()">
+        <i class="fa-solid fa-plus"></i>
+        {{ config().createLabel || ('Ajouter un ' + config().itemLabel) }}
+      </button>
+    }
+  </header>
+
+  <div class="toolbar">
+    <label class="search-control" for="resource-search">
+      <span>Rechercher</span>
+      <input id="resource-search" type="search" placeholder="Rechercher dans la liste" [value]="search()" (input)="updateSearch($event)" />
+    </label>
+    @for (field of filterFields(); track field.name) {
+      <label class="filter-control">
+        <span>{{ field.label }}</span>
+        <select [value]="filters()[field.name] || ''" (change)="updateFilter(field.name, $event)">
+          <option value="">Tous</option>
+          @for (option of fieldOptions(field); track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </label>
+    }
+    <button class="refresh-button" type="button" title="Actualiser" aria-label="Actualiser" (click)="loadRecords()">
+      <i class="fa-solid fa-rotate"></i>
+    </button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="message error" role="alert">{{ errorMessage() }} <button type="button" (click)="loadRecords()">Réessayer</button></div>
+  }
+  @if (loading()) {
+    <div class="message">Chargement…</div>
+  } @else if (filteredRecords().length === 0) {
+    <div class="message">Aucune donnée active trouvée.</div>
+  } @else {
+    <div class="table-wrapper">
+      <table>
+        <thead><tr>@for (column of config().columns; track column.label) { <th>{{ column.label }}</th> } <th>Actions</th></tr></thead>
+        <tbody>
+          @for (record of pagedRecords(); track record.id) {
+            <tr>
+              @for (column of config().columns; track column.label) { <td>{{ display(record, column) }}</td> }
+              <td class="actions">
+                <button class="icon-button view" type="button" title="Voir" aria-label="Voir" (click)="openViewModal(record)"><i class="fa-regular fa-eye"></i></button>
+                @if (!config().readOnly && can('update')) {
+                  <button class="icon-button edit" type="button" title="Modifier" aria-label="Modifier" (click)="openEditModal(record)"><i class="fa-solid fa-pen"></i></button>
+                }
+                @if (!config().readOnly && can('deactivate')) {
+                  <button class="icon-button danger" type="button" title="Désactiver" aria-label="Désactiver" (click)="deactivate(record)"><i class="fa-solid fa-ban"></i></button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <footer class="pagination" aria-label="Pagination">
+      <span>{{ filteredRecords().length }} résultat(s)</span>
+      <label>
+        <span>Par page</span>
+        <select [value]="pageSize()" (change)="updatePageSize($event)">
+          <option value="10">10</option><option value="20">20</option><option value="50">50</option>
+        </select>
+      </label>
+      <button type="button" aria-label="Page précédente" title="Page précédente" [disabled]="page() === 1" (click)="previousPage()"><i class="fa-solid fa-chevron-left"></i></button>
+      <strong>Page {{ page() }} / {{ totalPages() }}</strong>
+      <button type="button" aria-label="Page suivante" title="Page suivante" [disabled]="page() === totalPages()" (click)="nextPage()"><i class="fa-solid fa-chevron-right"></i></button>
+    </footer>
+  }
+</section>
+
+@if (modalOpen()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="resource-modal-title" (click)="$event.stopPropagation()">
+      <header>
+        <div><p>{{ config().eyebrow }}</p><h2 id="resource-modal-title">{{ viewing() ? 'Détails' : editing() ? 'Modifier' : 'Créer' }} {{ config().itemLabel }}</h2></div>
+        <button type="button" aria-label="Fermer" (click)="closeModal()">×</button>
+      </header>
+      @if (viewing(); as record) {
+        <dl class="detail-grid">
+          @for (column of config().columns; track column.label) {
+            <div><dt>{{ column.label }}</dt><dd>{{ display(record, column) }}</dd></div>
+          }
+        </dl>
+        <footer><button class="primary" type="button" (click)="closeModal()">Fermer</button></footer>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-grid">
+          @for (field of config().fields; track field.name) {
+            <label [class.wide]="field.type === 'textarea'">
+              <span>{{ field.label }} @if (field.required) { <strong>*</strong> }</span>
+              @if (field.type === 'select') {
+                <select [formControlName]="field.name">
+                  <option value="">Sélectionner</option>
+                  @for (option of fieldOptions(field); track option.value) { <option [value]="option.value">{{ option.label }}</option> }
+                </select>
+              } @else if (field.type === 'textarea') {
+                <textarea [formControlName]="field.name" rows="3" [attr.maxlength]="field.maxLength || null"></textarea>
+              } @else {
+                <input [type]="field.type" [formControlName]="field.name" [attr.maxlength]="field.maxLength || null" [attr.min]="field.min ?? null" [attr.max]="field.max ?? null" [attr.step]="field.step ?? null" />
+              }
+            </label>
+          }
+        </div>
+        @if (errorMessage()) { <div class="message error" role="alert">{{ errorMessage() }}</div> }
+        <footer><button type="button" (click)="closeModal()">Annuler</button><button class="primary" type="submit" [disabled]="saving()">{{ saving() ? 'Enregistrement…' : 'Enregistrer' }}</button></footer>
+        </form>
+      }
+    </section>
+  </div>
+}

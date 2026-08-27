@@ -1,0 +1,67 @@
+<div class="user-shell">
+  <header class="user-header">
+    <div class="brand">
+      <img src="/images/orange_logo.jpg" alt="Orange Mali" width="44" height="44">
+      <span><strong>Orange Mali</strong><small>Gestion des stages</small></span>
+    </div>
+    <div class="account" (click)="$event.stopPropagation()">
+      <button class="account-trigger" type="button" aria-haspopup="menu" [attr.aria-expanded]="userMenuOpened()" (click)="toggleUserMenu($event)">
+        <span class="avatar"><i class="fa-regular fa-user"></i></span>
+        <span><strong>{{ fullName() }}</strong><small>{{ user()?.role }}</small></span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      @if (userMenuOpened()) {
+        <div class="account-menu" role="menu">
+          <span>{{ user()?.email }}</span>
+          <button type="button" role="menuitem" (click)="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</button>
+        </div>
+      }
+    </div>
+  </header>
+
+  <main>
+    <header class="page-title">
+      <p>MON ESPACE</p>
+      <h1>Tableau de bord</h1>
+      <span>Consultez uniquement la synthèse de vos informations de stage.</span>
+    </header>
+
+    <section class="filters" aria-label="Recherche et filtres">
+      <label class="search"><span>Recherche</span><input type="search" placeholder="Stagiaire, stage, matricule…" [value]="search()" (input)="updateSearch($event)"></label>
+      <label><span>Département</span><select [value]="departmentFilter()" (change)="updateDepartment($event)"><option value="">Tous</option>@for (department of departments(); track department) { <option [value]="department">{{ department }}</option> }</select></label>
+      <label><span>Statut</span><select [value]="statusFilter()" (change)="updateStatus($event)"><option value="">Tous</option>@for (status of statuses(); track status) { <option [value]="status">{{ status }}</option> }</select></label>
+      <label><span>Année</span><select [value]="yearFilter()" (change)="updateYear($event)"><option value="">Toutes</option>@for (yearValue of years(); track yearValue) { <option [value]="yearValue">{{ yearValue }}</option> }</select></label>
+      <button type="button" title="Actualiser" aria-label="Actualiser" (click)="loadDashboard()"><i class="fa-solid fa-rotate"></i></button>
+    </section>
+
+    @if (errorMessage()) { <div class="state error" role="alert">{{ errorMessage() }}</div> }
+    @if (loading()) { <div class="state">Chargement de vos informations…</div> }
+    @else if (!filteredRows().length) { <div class="state">Aucune information ne correspond à votre recherche.</div> }
+    @else {
+      <section class="table-card">
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Stagiaire</th><th>Stage</th><th>Département</th><th>Encadreur</th><th>Année</th><th>Période</th><th>Statut</th></tr></thead>
+            <tbody>
+              @for (row of pagedRows(); track row.id) {
+                <tr>
+                  <td><strong>{{ internName(row) }}</strong><small>{{ row.intern?.registrationCode || '—' }}</small></td>
+                  <td><strong>{{ row.title || '—' }}</strong><small>{{ row.referenceCode || '—' }}</small></td>
+                  <td>{{ row.department?.name || '—' }}</td><td>{{ supervisorName(row) }}</td><td>{{ year(row) || '—' }}</td>
+                  <td>{{ formatDate(row.startDate) }} – {{ formatDate(row.endDate) }}</td><td><span class="badge">{{ row.status || '—' }}</span></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <footer class="pagination">
+          <span>{{ filteredRows().length }} résultat(s)</span>
+          <label><span>Par page</span><select [value]="pageSize()" (change)="updatePageSize($event)"><option value="10">10</option><option value="20">20</option><option value="50">50</option></select></label>
+          <button type="button" aria-label="Page précédente" [disabled]="page() === 1" (click)="previousPage()"><i class="fa-solid fa-chevron-left"></i></button>
+          <strong>Page {{ page() }} / {{ totalPages() }}</strong>
+          <button type="button" aria-label="Page suivante" [disabled]="page() === totalPages()" (click)="nextPage()"><i class="fa-solid fa-chevron-right"></i></button>
+        </footer>
+      </section>
+    }
+  </main>
+</div>

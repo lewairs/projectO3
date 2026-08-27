@@ -4,13 +4,8 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthStateService } from '../services/auth-state.service';
 import { homeUrlFor } from '../auth/auth-navigation';
 
-export const guestGuard: CanActivateFn = () => {
-  const authState = inject(AuthStateService);
+export const fallbackGuard: CanActivateFn = () => {
+  const state = inject(AuthStateService);
   const router = inject(Router);
-
-  if (!authState.isAuthenticated()) {
-    return true;
-  }
-
-  return router.parseUrl(homeUrlFor(authState.user()));
+  return router.parseUrl(homeUrlFor(state.user()));
 };

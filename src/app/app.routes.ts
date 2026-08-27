@@ -4,10 +4,13 @@ import { guestGuard } from './core/guards/guest.guard';
 import { passwordChangeGuard } from './core/guards/password-change.guard';
 import { permissionGuard } from './core/guards/permission.guard';
 import { roleGuard } from './core/guards/role.guard';
+import { fallbackGuard } from './core/guards/fallback.guard';
+import { managementAreaGuard } from './core/guards/management-area.guard';
 
 export const routes: Routes = [
   {
     path: 'accueil',
+    canActivate: [guestGuard],
     loadComponent: () =>
       import('./layouts/informative-layout/informative-layout').then(
         (m) => m.InformativeLayout,
@@ -44,11 +47,17 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'espace-utilisateur',
+    canActivate: [authGuard, passwordChangeGuard, roleGuard(['UTILISATEUR']), permissionGuard('dashboard.read')],
+    loadComponent: () =>
+      import('./features/user/dashboard/user-dashboard').then((m) => m.UserDashboard),
+  },
+  {
     path: 'dashboard',
     canActivate: [
       authGuard,
       passwordChangeGuard,
-      roleGuard(['ADMINISTRATEUR']),
+      managementAreaGuard,
     ],
     loadComponent: () =>
       import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayout),
@@ -65,21 +74,74 @@ export const routes: Routes = [
         path: 'departements',
         canActivate: [permissionGuard('departments.read')],
         loadComponent: () =>
-          import(
-            './features/admin/departements/pages/departements/department-list'
-          ).then(
-            (m) => m.DepartmentList,
-          ),
+          import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'departments' },
+      },
+      {
+        path: 'postes',
+        canActivate: [permissionGuard('positions.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'positions' },
       },
       {
         path: 'employes',
         canActivate: [permissionGuard('employees.read')],
-        loadComponent: () =>
-          import('./features/admin/utilisateurs/pages/utilisateurs').then(
-            (m) => m.Utilisateurs,
-          ),
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'employees' },
       },
-      { path: 'utilisateurs', redirectTo: 'employes', pathMatch: 'full' },
+      {
+        path: 'stagiaires',
+        canActivate: [permissionGuard('interns.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'interns' },
+      },
+      {
+        path: 'encadreurs',
+        canActivate: [permissionGuard('supervisors.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'supervisors' },
+      },
+      {
+        path: 'autorites',
+        canActivate: [permissionGuard('authorities.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'authorities' },
+      },
+      {
+        path: 'stages',
+        canActivate: [permissionGuard('internships.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'internships' },
+      },
+      {
+        path: 'suivi-stages',
+        canActivate: [permissionGuard('internships.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'tracking' },
+      },
+      {
+        path: 'projets',
+        canActivate: [permissionGuard('projects.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'projects' },
+      },
+      {
+        path: 'affectations',
+        canActivate: [permissionGuard('project-assignments.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'assignments' },
+      },
+      {
+        path: 'journal-audit',
+        canActivate: [permissionGuard('audit-logs.read')],
+        loadComponent: () => import('./features/admin/resource-page/resource-page').then((m) => m.ResourcePage),
+        data: { resourceKey: 'audit' },
+      },
+      {
+        path: 'utilisateurs',
+        canActivate: [permissionGuard('users.read')],
+        loadComponent: () => import('./features/admin/users/pages/users').then((m) => m.Users),
+      },
       {
         path: 'roles',
         canActivate: [permissionGuard('roles.read')],
@@ -88,6 +150,7 @@ export const routes: Routes = [
       },
       {
         path: 'parametres',
+        canActivate: [roleGuard(['ADMINISTRATEUR'])],
         loadComponent: () =>
           import('./features/admin/parametres/pages/parametres').then(
             (m) => m.Parametres,
@@ -96,5 +159,9 @@ export const routes: Routes = [
     ],
   },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' },
+  {
+    path: '**',
+    canActivate: [fallbackGuard],
+    loadComponent: () => import('./features/auth/pages/access-denied/acces-refuse').then((m) => m.AccessDenied),
+  },
 ];

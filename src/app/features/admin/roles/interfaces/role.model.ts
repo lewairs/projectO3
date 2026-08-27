@@ -1,3 +1,12 @@
+export interface Permission {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  category: string;
+  isActive: boolean;
+}
+
 export interface Role {
   id: string;
   name: string;
@@ -5,6 +14,7 @@ export interface Role {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  permissions: Permission[];
 }
 
 export interface CreateRoleRequest {

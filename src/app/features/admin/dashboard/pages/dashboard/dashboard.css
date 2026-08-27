@@ -135,6 +135,8 @@
 .availability-card { padding:20px; border:1px solid #e7e9ee; border-radius:12px; background:#fff; box-shadow:0 5px 16px rgba(24,29,38,.045); }
 .availability-card h2 { margin:0 0 10px; font-size:17px; }
 .availability-card p { margin:0; color:#656a73; line-height:1.6; }
+.activity { display:grid; gap:3px; padding:10px 0; border-bottom:1px solid #eceef1; }.activity span,.activity small { color:#6e737b; font-size:12px; }
+.dashboard-tables { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin-top:18px; }.data-card { overflow:hidden; border:1px solid #e7e9ee; border-radius:12px; background:#fff; }.data-card > header { display:flex; align-items:center; justify-content:space-between; padding:17px 18px; }.data-card h2 { margin:0; font-size:17px; }.data-card a { color:#a64f00; font-size:12px; font-weight:700; text-decoration:none; }.table-scroll { overflow:auto; }.data-card table { width:100%; min-width:580px; border-collapse:collapse; }.data-card th,.data-card td { padding:12px 15px; border-top:1px solid #eceef1; text-align:left; font-size:12px; }.data-card th { color:#626872; background:#f8f9fa; font-size:10px; text-transform:uppercase; }
 
 .stats-grid { gap:15px; }
 .dashboard-content { gap:18px; margin-top:19px; grid-template-columns:minmax(0, 1.7fr) minmax(290px, .75fr); }
@@ -144,3 +146,4 @@
     .primary-action { width:100%; justify-content:center; }
     .section-heading { align-items:flex-start; flex-direction:column; gap:8px; }
 }
+@media (max-width:1050px) { .dashboard-tables { grid-template-columns:1fr; } }

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { homeUrlFor } from '../../../../core/auth/auth-navigation';
+import { AuthStateService } from '../../../../core/services/auth-state.service';
 
 @Component({
   selector: 'app-access-denied',
@@ -9,7 +11,7 @@ import { RouterLink } from '@angular/router';
       <p class="code">403</p>
       <h1>Accès refusé</h1>
       <p>Votre compte ne possède pas la permission nécessaire.</p>
-      <a routerLink="/dashboard">Retour au tableau de bord</a>
+      <a [routerLink]="homeUrl()">Retour à mon espace</a>
     </main>
   `,
   styles: `
@@ -18,4 +20,7 @@ import { RouterLink } from '@angular/router';
     a { color: #b34f00; font-weight: 700; }
   `,
 })
-export class AccessDenied {}
+export class AccessDenied {
+  private readonly state = inject(AuthStateService);
+  readonly homeUrl = computed(() => homeUrlFor(this.state.user()));
+}
