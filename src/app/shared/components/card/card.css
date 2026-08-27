@@ -1,0 +1,5 @@
+.card { overflow:hidden; border:1px solid #e5e7eb; border-radius:12px; background:#fff; box-shadow:0 5px 16px rgba(24,29,38,.045); }
+.padded { padding:20px; }
+header { display:flex; justify-content:space-between; align-items:start; gap:16px; margin-bottom:18px; }
+h2 { margin:0; font-size:17px; }
+p { margin:5px 0 0; color:#737780; font-size:12px; }

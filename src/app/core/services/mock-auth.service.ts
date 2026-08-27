@@ -71,7 +71,6 @@ export class MockAuthService {
       accessToken: this.createFakeToken(),
       tokenType:'Bearer',
       expiresIn: 3600,
-      refreshExpiresIn: 604800,
       user: {
       id: '11c01e02-a593-457c-a2c3-d137ff4cb371',
       employeeId: '35ea0722-57ef-44bc-ae99-bbed5762a307',

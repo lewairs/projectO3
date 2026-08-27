@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { QuickActions } from './quick-actions';
 
@@ -9,6 +10,7 @@ describe('QuickActions', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [QuickActions],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(QuickActions);

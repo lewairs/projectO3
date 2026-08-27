@@ -1,0 +1,2 @@
+footer { display:flex; justify-content:space-between; gap:16px; padding:18px 28px; border-top:1px solid #e5e7eb; color:#757a82; background:#fff; font-size:11px; }
+@media (max-width:600px) { footer { flex-direction:column; text-align:center; } }

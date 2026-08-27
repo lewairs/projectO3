@@ -1,1 +1,1 @@
-<p>profile works!</p>
+<section class="embedded-page profile-summary"><span class="profile-avatar">{{ initials() }}</span><div><h2>{{ user()?.firstName || 'Utilisateur' }} {{ user()?.lastName || '' }}</h2><p>{{ user()?.jobTitle || 'Fonction non renseignée' }}</p><dl><div><dt>Email</dt><dd>{{ user()?.email || '—' }}</dd></div><div><dt>Matricule</dt><dd>{{ user()?.employeeNumber || '—' }}</dd></div><div><dt>Département</dt><dd>{{ user()?.department?.name || 'Non affecté' }}</dd></div><div><dt>Rôle</dt><dd>{{ user()?.role || '—' }}</dd></div></dl></div></section>

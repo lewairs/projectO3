@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 @Component({
   selector: 'app-settings',
@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './settings.html',
   styleUrl: './settings.css',
 })
-export class Settings {}
+export class Settings {
+  readonly notifications = signal(true);
+  readonly confirmations = signal(true);
+}

@@ -37,53 +37,10 @@ constructor(private fb: FormBuilder) {
   modalOpen = false;
   stagiaireForm!: FormGroup;
 
-  stagiaires = [
-  {
-    id: 1,
-    nom: 'Moussa Traoré',
-    departement: 'Réseaux',
-    encadreur: 'M. Diallo',
-    debut: '01/07/2026',
-    fin: '30/09/2026',
-    statut: 'En cours'
-  },
-
-  {
-    id: 2,
-    nom: 'Fatoumata Keita',
-    departement: 'RH',
-    encadreur: 'Mme Camara',
-    debut: '15/05/2026',
-    fin: '15/08/2026',
-    statut: 'Terminé'
-  },
-
-  {
-    id: 3,
-    nom: 'Oumar Konaté',
-    departement: 'Finance',
-    encadreur: 'M. Sidibé',
-    debut: '01/10/2026',
-    fin: '31/12/2026',
-    statut: 'À venir'
-  } 
-
-  ];
-
-  departements = [
-    'Produits Factory',
-    'Réseaux',
-    'Cybersécurité',
-    'Finance',
-    'Marketing'
-  ];
-
-  encadreurs = [
-    'Mme Coulibaly',
-    'M. Diakité',
-    'Mme Camara',
-    'M. Sidibé'
-  ];
+  // Back n'expose pas encore ces modules : aucune donnée simulée en mode réel.
+  stagiaires: Array<{ id: number; nom: string; departement: string; encadreur: string; debut: string; fin: string; statut: string }> = [];
+  departements: string[] = [];
+  encadreurs: string[] = [];
 
   statuts = [
     'En cours',

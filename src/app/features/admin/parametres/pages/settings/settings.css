@@ -1,0 +1,1 @@
+.preference { display:flex; justify-content:space-between; align-items:center; gap:14px; padding:14px 0; border-top:1px solid #eceef1; }.preference strong,.preference small { display:block; }.preference small { margin-top:4px; color:#777c84; font-size:11px; }.preference input { width:18px; height:18px; accent-color:#f16e00; }

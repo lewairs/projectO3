@@ -1,1 +1,1 @@
-<p>select works!</p>
+<label [for]="name()">@if (label()) { <span>{{ label() }}</span> }<select [id]="name()" [name]="name()" [value]="value()" [disabled]="disabled()" (change)="update($event)"><option value="">{{ placeholder() }}</option>@for (option of options(); track option.value) { <option [value]="option.value">{{ option.label }}</option> }</select></label>

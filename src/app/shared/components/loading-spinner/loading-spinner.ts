@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-loading-spinner',
@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './loading-spinner.html',
   styleUrl: './loading-spinner.css',
 })
-export class LoadingSpinner {}
+export class LoadingSpinner {
+  readonly message = input('Chargement…');
+  readonly compact = input(false);
+}

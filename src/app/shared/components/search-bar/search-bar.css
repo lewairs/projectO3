@@ -1,0 +1,5 @@
+label { display:flex; align-items:center; gap:10px; width:100%; padding:0 12px; border:1px solid #d9dce1; border-radius:9px; background:#fff; color:#747982; }
+label:focus-within { border-color:#f16e00; box-shadow:0 0 0 3px rgb(241 110 0 / 10%); }
+input { min-width:0; flex:1; padding:11px 0; border:0; outline:0; background:transparent; font:inherit; }
+button { border:0; background:transparent; color:#777c84; cursor:pointer; }
+.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }

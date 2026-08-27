@@ -12,11 +12,16 @@
       </p>
     </div>
 
-    <button class="add-button" type="button" (click)="openModal()">
+    <button class="add-button" type="button" disabled title="API stagiaires indisponible">
       <i class="fa-solid fa-plus"></i> Ajouter un stagiaire
     </button>
 
   </section>
+
+  <div class="backend-notice" role="status">
+    <i class="fa-solid fa-plug-circle-xmark"></i>
+    <div><strong>API stagiaires en attente</strong><p>Back n’expose pas encore ce module. Aucune donnée simulée n’est affichée.</p></div>
+  </div>
 
   <!-- Barre de recherche -->
 

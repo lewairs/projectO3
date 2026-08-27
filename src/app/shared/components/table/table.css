@@ -1,0 +1,9 @@
+.table-shell { overflow:auto; border:1px solid #e2e5e9; border-radius:12px; background:#fff; }
+table { width:100%; border-collapse:collapse; }
+th, td { padding:13px 15px; border-bottom:1px solid #eceef1; text-align:left; white-space:nowrap; }
+th { background:#f7f8fa; color:#5e636c; font-size:11px; letter-spacing:.03em; text-transform:uppercase; }
+td { color:#30343a; font-size:13px; }
+.empty { display:grid; place-items:center; align-content:center; min-height:230px; padding:28px; text-align:center; }
+.empty span { display:grid; place-items:center; width:48px; height:48px; margin-bottom:12px; border-radius:50%; background:#fff3e8; color:#f16e00; }
+.empty strong { font-size:14px; }
+.empty p { margin:7px 0 0; color:#777b83; font-size:12px; }

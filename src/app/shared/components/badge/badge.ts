@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-badge',
@@ -6,4 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './badge.html',
   styleUrl: './badge.css',
 })
-export class Badge {}
+export class Badge {
+  readonly label = input('Statut');
+  readonly variant = input<'neutral' | 'success' | 'warning' | 'danger' | 'info'>('neutral');
+}

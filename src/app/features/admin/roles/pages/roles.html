@@ -1,1 +1,31 @@
-<p>roles works!</p>
+<section class="management-page">
+  <header class="page-header">
+    <div><p class="eyebrow">Administration</p><h1>Rôles</h1><p>Consultez et gérez les rôles actifs fournis par le backend.</p></div>
+    @if (can('roles.create')) { <button class="primary" type="button" (click)="openCreateForm()"><i class="fa-solid fa-plus"></i> Ajouter un rôle</button> }
+  </header>
+  <div class="toolbar"><label for="role-search">Rechercher</label><input id="role-search" type="search" placeholder="Nom ou description" [value]="search()" (input)="updateSearch($event)" /></div>
+  @if (errorMessage()) { <div class="message error" role="alert">{{ errorMessage() }} <button type="button" (click)="loadRoles()">Réessayer</button></div> }
+  @if (loading()) {
+    <div class="message">Chargement des rôles…</div>
+  } @else if (filteredRoles().length === 0) {
+    <div class="message">Aucun rôle actif trouvé.</div>
+  } @else {
+    <div class="table-wrapper"><table><thead><tr><th>Nom</th><th>Description</th><th class="actions">Actions</th></tr></thead><tbody>
+      @for (role of filteredRoles(); track role.id) {
+        <tr><td><strong>{{ role.name }}</strong></td><td>{{ role.description || '—' }}</td><td class="actions">
+          @if (can('roles.update')) { <button type="button" (click)="openEditForm(role)">Modifier</button> }
+          @if (can('roles.deactivate')) { <button class="danger" type="button" (click)="deactivate(role)">Désactiver</button> }
+        </td></tr>
+      }
+    </tbody></table></div>
+  }
+</section>
+@if (formOpen()) {
+  <div class="modal-backdrop" (click)="closeForm()"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="role-form-title" (click)="$event.stopPropagation()">
+    <header><h2 id="role-form-title">{{ editing() ? 'Modifier le rôle' : 'Ajouter un rôle' }}</h2><button type="button" aria-label="Fermer" (click)="closeForm()">×</button></header>
+    <form [formGroup]="form" (ngSubmit)="submit()"><label for="role-name">Nom</label><input id="role-name" formControlName="name" maxlength="50" /><label for="role-description">Description</label><textarea id="role-description" formControlName="description" rows="4"></textarea>
+      @if (errorMessage()) { <div class="message error" role="alert">{{ errorMessage() }}</div> }
+      <footer><button type="button" (click)="closeForm()">Annuler</button><button class="primary" type="submit" [disabled]="saving()">{{ saving() ? 'Enregistrement…' : 'Enregistrer' }}</button></footer>
+    </form>
+  </section></div>
+}

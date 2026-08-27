@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   // Le serveur Angular relaie /backend vers le PC qui héberge NestJS.
-  // Cela permet au cookie HttpOnly de fonctionner en développement HTTP.
+  // Le backend actuel utilise uniquement un access token Bearer.
   apiBaseUrl: '/backend',
-  demoMode: true,
+  demoMode: false,
 } as const;

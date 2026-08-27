@@ -1,1 +1,7 @@
-<p>modal works!</p>
+<div class="backdrop" role="presentation" (click)="cancelled.emit()">
+  <section class="dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirmation-title" (click)="$event.stopPropagation()">
+    <span class="icon" [class.danger]="danger()"><i class="fa-solid" [class.fa-triangle-exclamation]="danger()" [class.fa-circle-question]="!danger()"></i></span>
+    <h2 id="confirmation-title">{{ title() }}</h2><p>{{ message() }}</p>
+    <footer><button type="button" (click)="cancelled.emit()">{{ cancelLabel() }}</button><button class="confirm" [class.danger-button]="danger()" type="button" (click)="confirmed.emit()">{{ confirmLabel() }}</button></footer>
+  </section>
+</div>

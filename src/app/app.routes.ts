@@ -110,13 +110,14 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'utilisateurs',
-        canActivate: [permissionGuard('users.read')],
+        path: 'employes',
+        canActivate: [permissionGuard('employees.read')],
         loadComponent: () =>
           import('./features/admin/utilisateurs/pages/utilisateurs').then(
             (m) => m.Utilisateurs,
           ),
       },
+      { path: 'utilisateurs', redirectTo: 'employes', pathMatch: 'full' },
       {
         path: 'roles',
         canActivate: [permissionGuard('roles.read')],
@@ -196,6 +197,6 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: '', redirectTo: 'accueil', pathMatch: 'full' },
-  { path: '**', redirectTo: 'accueil' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' },
 ];

@@ -1,0 +1,5 @@
+.badge { display:inline-flex; align-items:center; width:max-content; padding:5px 9px; border-radius:999px; background:#eef0f3; color:#50555d; font-size:11px; font-weight:750; }
+.success { background:#e8f6ed; color:#237442; }
+.warning { background:#fff1e5; color:#a74f00; }
+.danger { background:#fdeaea; color:#a32626; }
+.info { background:#e9f2ff; color:#185b9d; }

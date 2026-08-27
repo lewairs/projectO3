@@ -1,1 +1,7 @@
-<p>stages works!</p>
+<section class="feature-page">
+  <header class="feature-header"><div><p class="feature-eyebrow">Gestion</p><h1>Stages</h1><p>Affectations, périodes et état d’avancement des stages.</p></div><button class="feature-action" type="button" disabled title="API stages en attente"><i class="fa-solid fa-plus"></i> Créer un stage</button></header>
+  <div class="backend-banner" role="status"><i class="fa-solid fa-plug-circle-xmark"></i><div><strong>Connexion au module stages en attente</strong><p>L’écran est prêt ; Back doit encore exposer les endpoints de gestion des stages.</p></div></div>
+  <div class="metric-grid"><article class="metric-card"><span><i class="fa-solid fa-briefcase"></i></span><div><strong>0</strong><small>Stages actifs</small></div></article><article class="metric-card"><span><i class="fa-solid fa-calendar-plus"></i></span><div><strong>0</strong><small>À venir</small></div></article><article class="metric-card"><span><i class="fa-solid fa-circle-check"></i></span><div><strong>0</strong><small>Terminés</small></div></article><article class="metric-card"><span><i class="fa-solid fa-triangle-exclamation"></i></span><div><strong>0</strong><small>À surveiller</small></div></article></div>
+  <div class="feature-toolbar"><app-search-bar placeholder="Rechercher un stage" [value]="search()" (valueChange)="search.set($event)" /><span class="result-label">0 résultat</span></div>
+  <app-table [columns]="columns" [rows]="rows" emptyTitle="Aucun stage disponible" emptyMessage="Les stages transmis par le backend apparaîtront ici." />
+</section>

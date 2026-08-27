@@ -12,7 +12,9 @@
 
 }
 
-button{
+a{
+    display:block;
+    box-sizing:border-box;
     width:100%;
     margin-bottom:15px;
     padding:12px;
@@ -20,11 +22,11 @@ button{
     border-radius:8px;
     background:var(--primary);
     color:white;
-    cursor:pointer;
+    text-decoration:none;
     font-weight:600;
 }
 
-button:hover{
+a:hover{
 
     background:var(--primary-dark);
 
@@ -32,5 +34,5 @@ button:hover{
 
 .card { padding:20px; border:1px solid #e7e9ee; border-radius:12px; box-shadow:0 5px 16px rgba(24,29,38,.045); }
 .card h2 { margin-bottom:15px; font-size:17px; }
-button { margin-bottom:9px; padding:11px 12px; border:1px solid #ffe0c2; background:#fff8f1; color:#a84f00; font-size:11px; text-align:left; }
-button:hover { border-color:#ff7900; background:#ff7900; color:#171717; }
+a { margin-bottom:9px; padding:11px 12px; border:1px solid #ffe0c2; background:#fff8f1; color:#a84f00; font-size:11px; text-align:left; }
+a:hover { border-color:#ff7900; background:#ff7900; color:#171717; }

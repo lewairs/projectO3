@@ -1,1 +1,1 @@
-<p>table works!</p>
+<div class="table-shell">@if (rows().length) { <table><thead><tr>@for (column of columns(); track column.key) { <th>{{ column.label }}</th> }</tr></thead><tbody>@for (row of rows(); track $index) { <tr>@for (column of columns(); track column.key) { <td>{{ display(row, column.key) }}</td> }</tr> }</tbody></table> } @else { <div class="empty"><span><i class="fa-regular fa-folder-open"></i></span><strong>{{ emptyTitle() }}</strong><p>{{ emptyMessage() }}</p></div> }</div>

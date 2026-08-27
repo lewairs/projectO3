@@ -10,7 +10,7 @@ export interface PositionSummary {
   name: string;
 }
 
-export interface AuthenticatedUser {
+export interface BackendUser {
   id: string;
   employeeId: string;
   employeeNumber: string;
@@ -19,10 +19,13 @@ export interface AuthenticatedUser {
   email: string;
   phone?: string | null;
   jobTitle: string;
-  position: PositionSummary;
   department: DepartmentSummary | null;
   role: string;
-  permissions: string[];
   mustChangePassword: boolean;
   lastLoginAt?: string | null;
+}
+
+export interface AuthenticatedUser extends BackendUser {
+  position: PositionSummary | null;
+  permissions: string[];
 }

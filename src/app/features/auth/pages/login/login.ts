@@ -73,9 +73,10 @@ export class Login {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (response) => {
-          let target = '/dashboard';
-          if (response.user.role === 'ENCADRANT') target = '/espace-encadrant';
-          if (response.user.role === 'STAGIAIRE') target = '/espace-stagiaire';
+          let target = '/accueil';
+          if (response.user.role === 'ADMINISTRATEUR') target = '/dashboard';
+          if (this.demoMode && response.user.role === 'ENCADRANT') target = '/espace-encadrant';
+          if (this.demoMode && response.user.role === 'STAGIAIRE') target = '/espace-stagiaire';
           if (response.user.mustChangePassword) target = '/changer-mot-de-passe';
           void this.router.navigate([target], { replaceUrl: true });
         },

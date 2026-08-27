@@ -44,7 +44,7 @@ export class DepartmentService {
     if (this.environment.demoMode) {
       return of([...this.demoDepartements]).pipe(delay(250));
     }
-    return this.http.get<Department[]>(this.apiUrl);
+    return this.http.get<Department[]>(`${this.apiUrl}/path`);
   }
 
   getById(id: string): Observable<Department> {
@@ -90,13 +90,13 @@ export class DepartmentService {
     return this.http.patch<Department>(`${this.apiUrl}/${id}`, request);
   }
 
-  deactivate(id: string): Observable<void> {
+  deactivate(id: string): Observable<Department | undefined> {
     if (this.environment.demoMode) {
       this.demoDepartements = this.demoDepartements.filter(
         (item) => item.id !== id,
       );
       return of(undefined).pipe(delay(200));
     }
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<Department>(`${this.apiUrl}/${id}`);
   }
 }

@@ -1,0 +1,4 @@
+nav { display:flex; justify-content:center; align-items:center; gap:6px; }
+button { min-width:36px; height:36px; padding:0 10px; border:1px solid #dfe2e6; border-radius:8px; background:#fff; color:#4e535b; cursor:pointer; }
+button.active { border-color:#f16e00; background:#f16e00; color:#171717; font-weight:800; }
+button:disabled { opacity:.45; cursor:not-allowed; }

@@ -34,7 +34,7 @@ describe('DepartmentService', () => {
       expect(departements[0].code).toBe('DSI');
     });
 
-    const request = http.expectOne('/backend/departments');
+    const request = http.expectOne('/backend/departments/path');
     expect(request.request.method).toBe('GET');
     request.flush([
       {

@@ -77,14 +77,14 @@ export class Sidebar {
   private readonly administrationItems: MenuItem[] = [
 
     {
-      label: 'Utilisateurs',
+      label: 'Employés',
       icon: 'fa-solid fa-users',
-      route: '/dashboard/utilisateurs',
-      permission: 'users.read',
+      route: '/dashboard/employes',
+      permission: 'employees.read',
     },
 
     {
-      label: 'Rôles et permissions',
+      label: 'Rôles',
       icon: 'fa-solid fa-user-shield',
       route: '/dashboard/roles',
       permission: 'roles.read',

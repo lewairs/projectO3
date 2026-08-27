@@ -14,6 +14,7 @@ export interface CreateDepartmentRequest {
   name: string;
   code: string;
   description?: string;
+  isActive?: boolean;
 }
 
 export type UpdateDepartmentRequest = Partial<CreateDepartmentRequest>;

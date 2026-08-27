@@ -4,6 +4,7 @@ import { AuthenticatedUser } from '../../interfaces/user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStateService {
+  private readonly storageKey = 'access_token';
   private readonly accessTokenSignal = signal<string | null>(null);
   private readonly userSignal = signal<AuthenticatedUser | null>(null);
   private readonly initializedSignal = signal(false);
@@ -15,13 +16,32 @@ export class AuthStateService {
     () => this.accessTokenSignal() !== null && this.userSignal() !== null,
   );
 
-  setSession(accessToken: string, user: AuthenticatedUser): void {
+  setSession(
+    accessToken: string,
+    user: AuthenticatedUser,
+    persist = true,
+  ): void {
     this.accessTokenSignal.set(accessToken);
     this.userSignal.set(user);
+    if (persist && typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem(this.storageKey, accessToken);
+    }
   }
 
   setAccessToken(accessToken: string): void {
     this.accessTokenSignal.set(accessToken);
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem(this.storageKey, accessToken);
+    }
+  }
+
+  restoreAccessToken(): string | null {
+    if (typeof sessionStorage === 'undefined') {
+      return null;
+    }
+    const accessToken = sessionStorage.getItem(this.storageKey);
+    this.accessTokenSignal.set(accessToken);
+    return accessToken;
   }
 
   setUser(user: AuthenticatedUser): void {
@@ -44,5 +64,8 @@ export class AuthStateService {
   clear(): void {
     this.accessTokenSignal.set(null);
     this.userSignal.set(null);
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.removeItem(this.storageKey);
+    }
   }
 }

@@ -1,1 +1,1 @@
-<p>input works!</p>
+<label [for]="name()">@if (label()) { <span>{{ label() }} @if (required()) { <em>*</em> }</span> }<input [id]="name()" [name]="name()" [type]="type()" [placeholder]="placeholder()" [value]="value()" [required]="required()" [disabled]="disabled()" [class.invalid]="error()" (input)="update($event)" />@if (error()) { <small>{{ error() }}</small> }</label>

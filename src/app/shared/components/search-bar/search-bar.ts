@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-search-bar',
@@ -6,4 +6,12 @@ import { Component } from '@angular/core';
   templateUrl: './search-bar.html',
   styleUrl: './search-bar.css',
 })
-export class SearchBar {}
+export class SearchBar {
+  readonly value = input('');
+  readonly placeholder = input('Rechercher…');
+  readonly label = input('Rechercher');
+  readonly valueChange = output<string>();
+
+  update(event: Event): void { this.valueChange.emit((event.target as HTMLInputElement).value); }
+  clear(): void { this.valueChange.emit(''); }
+}

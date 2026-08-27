@@ -1,1 +1,1 @@
-<p>search-bar works!</p>
+<label><span class="sr-only">{{ label() }}</span><i class="fa-solid fa-magnifying-glass"></i><input type="search" [placeholder]="placeholder()" [value]="value()" (input)="update($event)" />@if (value()) { <button type="button" aria-label="Effacer la recherche" (click)="clear()"><i class="fa-solid fa-xmark"></i></button> }</label>

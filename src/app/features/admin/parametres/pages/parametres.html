@@ -1,1 +1,22 @@
-<p>parametres works!</p>
+<section class="settings-page">
+  <header><p>CONFIGURATION</p><h1>Paramètres</h1><span>Gérez votre profil, la sécurité et les préférences de l’interface.</span></header>
+  <div class="settings-grid">
+    <article class="settings-card profile-card">
+      <div class="card-heading"><div><h2>Mon profil</h2><p>Informations synchronisées avec Back.</p></div><span class="sync-badge"><i class="fa-solid fa-arrows-rotate"></i> Synchronisé</span></div>
+      <div class="identity"><span class="avatar">{{ initials() }}</span><div><strong>{{ user()?.firstName || 'Utilisateur' }} {{ user()?.lastName || '' }}</strong><small>{{ user()?.jobTitle || 'Fonction non renseignée' }}</small></div></div>
+      <dl><div><dt>Email</dt><dd>{{ user()?.email || '—' }}</dd></div><div><dt>Matricule</dt><dd>{{ user()?.employeeNumber || '—' }}</dd></div><div><dt>Département</dt><dd>{{ user()?.department?.name || 'Non affecté' }}</dd></div><div><dt>Rôle</dt><dd>{{ user()?.role || '—' }}</dd></div></dl>
+    </article>
+    <article class="settings-card">
+      <div class="card-heading"><div><h2>Préférences</h2><p>Options enregistrées localement dans ce navigateur.</p></div></div>
+      <form [formGroup]="preferences" (ngSubmit)="savePreferences()">
+        <label class="switch-row"><span><strong>Notifications par email</strong><small>Recevoir les alertes importantes.</small></span><input type="checkbox" formControlName="emailNotifications" /></label>
+        <label class="switch-row"><span><strong>Menu compact</strong><small>Réduire l’espace occupé par la navigation.</small></span><input type="checkbox" formControlName="compactSidebar" /></label>
+        <label class="switch-row"><span><strong>Confirmer les suppressions</strong><small>Demander une validation avant une action sensible.</small></span><input type="checkbox" formControlName="confirmDestructiveActions" /></label>
+        <button class="save-button" type="submit">Enregistrer les préférences</button>
+        @if (savedMessage()) { <p class="saved-message" role="status"><i class="fa-solid fa-circle-check"></i> {{ savedMessage() }}</p> }
+      </form>
+    </article>
+    <article class="settings-card security-card"><div class="card-heading"><div><h2>Sécurité</h2><p>Protection de votre session.</p></div><span class="security-icon"><i class="fa-solid fa-shield-halved"></i></span></div><div class="security-row"><div><strong>Mot de passe</strong><small>Le changement impose une nouvelle connexion.</small></div><a href="/changer-mot-de-passe">Modifier</a></div><div class="security-row"><div><strong>Session active</strong><small>Le jeton est conservé uniquement dans cet onglet.</small></div><span class="active-status">Active</span></div></article>
+    <article class="settings-card integration-card"><div class="card-heading"><div><h2>Intégration backend</h2><p>État fonctionnel du frontend.</p></div></div><ul><li class="ready"><i class="fa-solid fa-check"></i><span><strong>Authentification</strong><small>Connectée</small></span></li><li class="ready"><i class="fa-solid fa-check"></i><span><strong>Départements, rôles, employés</strong><small>Connectés</small></span></li><li class="waiting"><i class="fa-solid fa-clock"></i><span><strong>Stages, projets, stagiaires</strong><small>En attente de Back</small></span></li></ul></article>
+  </div>
+</section>

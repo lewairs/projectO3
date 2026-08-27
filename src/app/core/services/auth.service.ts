@@ -6,17 +6,16 @@ import {
   finalize,
   map,
   of,
-  switchMap,
   tap,
   timeout,
 } from 'rxjs';
 
 import { APP_ENVIRONMENT } from '../config/api.config';
-import { AuthenticatedUser } from '../../interfaces/user';
+import { AuthenticatedUser, BackendUser } from '../../interfaces/user';
 import { LoginRequest } from '../../interfaces/login-request';
 import {
+  BackendLoginResponse,
   LoginResponse,
-  RefreshResponse,
 } from '../../interfaces/login-response';
 import {
   ChangePasswordRequest,
@@ -24,6 +23,31 @@ import {
 } from '../../interfaces/change-password.interface';
 import { AuthStateService } from './auth-state.service';
 import { MockAuthService } from './mock-auth.service';
+
+const ROLE_PERMISSIONS: Record<string, string[]> = {
+  ADMINISTRATEUR: [
+    'dashboard.read',
+    'departments.read',
+    'departments.create',
+    'departments.update',
+    'departments.deactivate',
+    'employees.read',
+    'employees.create',
+    'employees.update',
+    'employees.deactivate',
+    'interns.read',
+    'internships.read',
+    'supervisors.read',
+    'authorities.read',
+    'projects.read',
+    'users.read',
+    'roles.read',
+    'roles.create',
+    'roles.update',
+    'roles.deactivate',
+  ],
+  UTILISATEUR: [],
+};
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -37,34 +61,31 @@ export class AuthService {
     if (this.environment.demoMode) {
       return this.mockAuthService.login(credentials).pipe(
         tap((response) =>
-          this.state.setSession(response.accessToken, response.user),
+          this.state.setSession(response.accessToken, response.user, false),
         ),
       );
     }
 
     return this.http
-      .post<LoginResponse>(`${this.apiUrl}/login`, credentials, {
-        withCredentials: true,
-      })
+      .post<BackendLoginResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
+        map((response): LoginResponse => ({
+          ...response,
+          user: this.adaptBackendUser(response.user),
+        })),
         tap((response) =>
           this.state.setSession(response.accessToken, response.user),
         ),
       );
   }
 
-  refresh(): Observable<RefreshResponse> {
-    return this.http
-      .post<RefreshResponse>(`${this.apiUrl}/refresh`, {}, {
-        withCredentials: true,
-      })
-      .pipe(tap((response) => this.state.setAccessToken(response.accessToken)));
-  }
-
   getProfile(): Observable<AuthenticatedUser> {
     return this.http
-      .get<AuthenticatedUser>(`${this.apiUrl}/me`, { withCredentials: true })
-      .pipe(tap((user) => this.state.setUser(user)));
+      .get<BackendUser>(`${this.apiUrl}/me`)
+      .pipe(
+        map((user) => this.adaptBackendUser(user)),
+        tap((user) => this.state.setUser(user)),
+      );
   }
 
   initialize(): Observable<void> {
@@ -73,9 +94,14 @@ export class AuthService {
       return of(undefined);
     }
 
-    return this.refresh().pipe(
+    const accessToken = this.state.restoreAccessToken();
+    if (!accessToken) {
+      this.state.markInitialized();
+      return of(undefined);
+    }
+
+    return this.getProfile().pipe(
       timeout({ first: 5000 }),
-      switchMap(() => this.getProfile()),
       map(() => undefined),
       catchError(() => {
         this.state.clear();
@@ -95,17 +121,15 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    if (this.environment.demoMode) {
-      this.state.clear();
-      return of(undefined);
-    }
+    this.state.clear();
+    return of(undefined);
+  }
 
-    return this.http
-      .post<unknown>(`${this.apiUrl}/logout`, {}, { withCredentials: true })
-      .pipe(
-        map(() => undefined),
-        catchError(() => of(undefined)),
-        finalize(() => this.state.clear()),
-      );
+  private adaptBackendUser(user: BackendUser): AuthenticatedUser {
+    return {
+      ...user,
+      position: null,
+      permissions: ROLE_PERMISSIONS[user.role] ?? [],
+    };
   }
 }

@@ -509,3 +509,7 @@ td { padding:15px 16px; color:#34373d; font-size:12px; }
     .table-card { overflow-x:auto; }
     table { min-width:760px; }
 }
+.backend-notice { display:flex; gap:14px; align-items:center; margin:0 0 20px; padding:16px 18px; border:1px solid #ffd2aa; border-radius:10px; background:#fff8f1; color:#6b3500; }
+.backend-notice i { color:#f16e00; font-size:22px; }
+.backend-notice p { margin:4px 0 0; color:#745a45; }
+.add-button:disabled { opacity:.55; cursor:not-allowed; }

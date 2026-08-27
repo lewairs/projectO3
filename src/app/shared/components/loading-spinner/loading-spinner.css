@@ -1,0 +1,7 @@
+.loader { display:grid; place-items:center; gap:10px; min-height:160px; color:#6e737b; }
+.loader.compact { display:inline-flex; min-height:0; }
+.loader span { width:28px; height:28px; border:3px solid #ffe0c2; border-top-color:#f16e00; border-radius:50%; animation:spin .75s linear infinite; }
+.loader.compact span { width:18px; height:18px; }
+.loader p { margin:0; font-size:12px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+@media (prefers-reduced-motion:reduce) { .loader span { animation-duration:1.5s; } }

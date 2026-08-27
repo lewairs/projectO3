@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-card',
@@ -6,4 +6,8 @@ import { Component } from '@angular/core';
   templateUrl: './card.html',
   styleUrl: './card.css',
 })
-export class Card {}
+export class Card {
+  readonly title = input('');
+  readonly subtitle = input('');
+  readonly padded = input(true);
+}
