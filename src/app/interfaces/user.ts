@@ -10,6 +10,8 @@ export interface PositionSummary {
   name: string;
 }
 
+export type BackendRole = 'ADMINISTRATEUR' | 'UTILISATEUR';
+
 export interface BackendUser {
   id: string;
   employeeId: string;
@@ -20,7 +22,7 @@ export interface BackendUser {
   phone?: string | null;
   jobTitle: string;
   department: DepartmentSummary | null;
-  role: string;
+  role: BackendRole;
   mustChangePassword: boolean;
   lastLoginAt?: string | null;
 }

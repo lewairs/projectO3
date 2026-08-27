@@ -19,7 +19,7 @@ describe('DepartmentService', () => {
         provideHttpClientTesting(),
         {
           provide: APP_ENVIRONMENT,
-          useValue: { production: false, apiBaseUrl: '/backend', demoMode: false },
+          useValue: { production: false, apiBaseUrl: '/backend' },
         },
       ],
     });

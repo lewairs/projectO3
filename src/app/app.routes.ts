@@ -62,20 +62,6 @@ export const routes: Routes = [
           ),
       },
       {
-        path: 'stagiaires',
-        canActivate: [permissionGuard('interns.read')],
-        loadComponent: () =>
-          import('./features/admin/stagiaires/pages/stagiaires').then(
-            (m) => m.Stagiaires,
-          ),
-      },
-      {
-        path: 'stages',
-        canActivate: [permissionGuard('internships.read')],
-        loadComponent: () =>
-          import('./features/admin/stages/pages/stages').then((m) => m.Stages),
-      },
-      {
         path: 'departements',
         canActivate: [permissionGuard('departments.read')],
         loadComponent: () =>
@@ -83,30 +69,6 @@ export const routes: Routes = [
             './features/admin/departements/pages/departements/department-list'
           ).then(
             (m) => m.DepartmentList,
-          ),
-      },
-      {
-        path: 'encadreurs',
-        canActivate: [permissionGuard('supervisors.read')],
-        loadComponent: () =>
-          import('./features/admin/encadreurs/pages/encadreurs').then(
-            (m) => m.Encadreurs,
-          ),
-      },
-      {
-        path: 'autorites',
-        canActivate: [permissionGuard('authorities.read')],
-        loadComponent: () =>
-          import('./features/admin/autorites/pages/autorites').then(
-            (m) => m.Autorites,
-          ),
-      },
-      {
-        path: 'projets',
-        canActivate: [permissionGuard('projects.read')],
-        loadComponent: () =>
-          import('./features/admin/projets/pages/projets').then(
-            (m) => m.Projets,
           ),
       },
       {
@@ -130,70 +92,6 @@ export const routes: Routes = [
           import('./features/admin/parametres/pages/parametres').then(
             (m) => m.Parametres,
           ),
-      },
-    ],
-  },
-  {
-    path: 'espace-encadrant',
-    canActivate: [authGuard, passwordChangeGuard, roleGuard(['ENCADRANT'])],
-    loadComponent: () =>
-      import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayout),
-    children: [
-      {
-        path: '',
-        data: { view: 'overview' },
-        loadComponent: () =>
-          import('./features/admin/encadreurs/pages/supervisor-space/espace-encadrant').then((m) => m.EspaceEncadrant),
-      },
-      {
-        path: 'stagiaires',
-        data: { view: 'stagiaires' },
-        loadComponent: () =>
-          import('./features/admin/encadreurs/pages/supervisor-space/espace-encadrant').then((m) => m.EspaceEncadrant),
-      },
-      {
-        path: 'validations',
-        data: { view: 'validations' },
-        loadComponent: () =>
-          import('./features/admin/encadreurs/pages/supervisor-space/espace-encadrant').then((m) => m.EspaceEncadrant),
-      },
-      {
-        path: 'evaluations',
-        data: { view: 'evaluations' },
-        loadComponent: () =>
-          import('./features/admin/encadreurs/pages/supervisor-space/espace-encadrant').then((m) => m.EspaceEncadrant),
-      },
-    ],
-  },
-  {
-    path: 'espace-stagiaire',
-    canActivate: [authGuard, passwordChangeGuard, roleGuard(['STAGIAIRE'])],
-    loadComponent: () =>
-      import('./layouts/admin-layout/admin-layout').then((m) => m.AdminLayout),
-    children: [
-      {
-        path: '',
-        data: { view: 'overview' },
-        loadComponent: () =>
-          import('./features/admin/stagiaires/pages/intern-space/espace-stagiaire').then((m) => m.EspaceStagiaire),
-      },
-      {
-        path: 'stage',
-        data: { view: 'stage' },
-        loadComponent: () =>
-          import('./features/admin/stagiaires/pages/intern-space/espace-stagiaire').then((m) => m.EspaceStagiaire),
-      },
-      {
-        path: 'livrables',
-        data: { view: 'livrables' },
-        loadComponent: () =>
-          import('./features/admin/stagiaires/pages/intern-space/espace-stagiaire').then((m) => m.EspaceStagiaire),
-      },
-      {
-        path: 'documents',
-        data: { view: 'documents' },
-        loadComponent: () =>
-          import('./features/admin/stagiaires/pages/intern-space/espace-stagiaire').then((m) => m.EspaceStagiaire),
       },
     ],
   },

@@ -14,11 +14,7 @@ export class Sidebar {
   readonly layoutService = inject(LayoutService);
   private readonly authState = inject(AuthStateService);
   readonly role = computed(() => this.authState.user()?.role ?? 'UTILISATEUR');
-  readonly sectionLabel = computed(() => {
-    if (this.role() === 'ENCADRANT') return 'ENCADREMENT';
-    if (this.role() === 'STAGIAIRE') return 'MON ESPACE';
-    return 'GESTION';
-  });
+  readonly sectionLabel = computed(() => 'GESTION');
 
   private readonly menuItems: MenuItem[] = [
 
@@ -31,46 +27,11 @@ export class Sidebar {
     },
 
     {
-      label: 'Stagiaires',
-      icon: 'fa-solid fa-user-graduate',
-      route: '/dashboard/stagiaires',
-      permission: 'interns.read',
-    },
-
-    {
-      label: 'Stages',
-      icon: 'fa-solid fa-folder-open',
-      route: '/dashboard/stages',
-      permission: 'internships.read',
-    },
-
-    {
       label: 'Départements',
       icon: 'fa-solid fa-building',
       route: '/dashboard/departements',
       permission: 'departments.read',
     },
-
-    {
-      label: 'Encadreurs',
-      icon: 'fa-solid fa-chalkboard-user',
-      route: '/dashboard/encadreurs',
-      permission: 'supervisors.read',
-    },
-
-    {
-      label: 'Autorités de tutelle',
-      icon: 'fa-solid fa-sitemap',
-      route: '/dashboard/autorites',
-      permission: 'authorities.read',
-    },
-
-    {
-      label: 'Projets',
-      icon: 'fa-solid fa-diagram-project',
-      route: '/dashboard/projets',
-      permission: 'projects.read',
-    }
 
   ];
 
@@ -98,23 +59,7 @@ export class Sidebar {
 
   ];
 
-  private readonly supervisorItems: MenuItem[] = [
-    { label: 'Vue d’ensemble', icon: 'fa-solid fa-table-columns', route: '/espace-encadrant', exact: true },
-    { label: 'Mes stagiaires', icon: 'fa-solid fa-user-graduate', route: '/espace-encadrant/stagiaires' },
-    { label: 'Validations', icon: 'fa-solid fa-list-check', route: '/espace-encadrant/validations' },
-    { label: 'Évaluations', icon: 'fa-regular fa-star', route: '/espace-encadrant/evaluations' },
-  ];
-
-  private readonly internItems: MenuItem[] = [
-    { label: 'Vue d’ensemble', icon: 'fa-solid fa-table-columns', route: '/espace-stagiaire', exact: true },
-    { label: 'Mon stage', icon: 'fa-solid fa-briefcase', route: '/espace-stagiaire/stage' },
-    { label: 'Mes livrables', icon: 'fa-regular fa-folder-open', route: '/espace-stagiaire/livrables' },
-    { label: 'Mes documents', icon: 'fa-regular fa-file-lines', route: '/espace-stagiaire/documents' },
-  ];
-
   readonly visibleMenuItems = computed(() => {
-    if (this.role() === 'ENCADRANT') return this.supervisorItems;
-    if (this.role() === 'STAGIAIRE') return this.internItems;
     return this.menuItems.filter(
       (item) => !item.permission || this.authState.hasPermission(item.permission),
     );

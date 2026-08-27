@@ -15,22 +15,22 @@
             </div>
 
             <h1>Orange Mali</h1>
-            <h2>Gestion des stagiaires</h2>
+            <h2>Administration des référentiels</h2>
 
             <p>
-                Gérez facilement les stagiaires, les projets et les départements
-                depuis une plateforme unique.
+                Gérez les départements, les employés et les rôles
+                depuis une plateforme unique connectée au backend.
             </p>
 
             <div class="brand-features">
                 <div class="feature">
-                    <i class="fa-solid fa-user-graduate"></i>
-                    <span>Gestion des stagiaires</span>
+                    <i class="fa-solid fa-users"></i>
+                    <span>Gestion des employés</span>
                 </div>
 
                 <div class="feature">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <span>Suivi des projets</span>
+                    <i class="fa-solid fa-building"></i>
+                    <span>Gestion des départements</span>
                 </div>
 
                 <div class="feature">
@@ -51,12 +51,6 @@
             </div>
             <h2>Connexion</h2>
             <p class="subtitle">Entrez vos informations de connexion.</p>
-
-            @if (demoMode) {
-                <div class="login-error" role="status">
-                    Mode démonstration — admin@test.com / Test@123456
-                </div>
-            }
 
             <form [formGroup]="loginForm" (ngSubmit)="login()">
                 @if(errorMessage){

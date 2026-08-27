@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../../core/services/auth.service';
-import { APP_ENVIRONMENT } from '../../../../core/config/api.config';
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, CommonModule],
@@ -17,7 +16,6 @@ export class Login {
   private fb = inject(NonNullableFormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
-  readonly demoMode = inject(APP_ENVIRONMENT).demoMode;
 
   isLoading = false;
   errorMessage = '';
@@ -75,8 +73,6 @@ export class Login {
         next: (response) => {
           let target = '/accueil';
           if (response.user.role === 'ADMINISTRATEUR') target = '/dashboard';
-          if (this.demoMode && response.user.role === 'ENCADRANT') target = '/espace-encadrant';
-          if (this.demoMode && response.user.role === 'STAGIAIRE') target = '/espace-stagiaire';
           if (response.user.mustChangePassword) target = '/changer-mot-de-passe';
           void this.router.navigate([target], { replaceUrl: true });
         },

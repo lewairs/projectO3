@@ -22,7 +22,6 @@ import {
   ChangePasswordResponse,
 } from '../../interfaces/change-password.interface';
 import { AuthStateService } from './auth-state.service';
-import { MockAuthService } from './mock-auth.service';
 
 const ROLE_PERMISSIONS: Record<string, string[]> = {
   ADMINISTRATEUR: [
@@ -35,12 +34,6 @@ const ROLE_PERMISSIONS: Record<string, string[]> = {
     'employees.create',
     'employees.update',
     'employees.deactivate',
-    'interns.read',
-    'internships.read',
-    'supervisors.read',
-    'authorities.read',
-    'projects.read',
-    'users.read',
     'roles.read',
     'roles.create',
     'roles.update',
@@ -54,18 +47,9 @@ export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly environment = inject(APP_ENVIRONMENT);
   private readonly state = inject(AuthStateService);
-  private readonly mockAuthService = inject(MockAuthService);
   private readonly apiUrl = `${this.environment.apiBaseUrl}/auth`;
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    if (this.environment.demoMode) {
-      return this.mockAuthService.login(credentials).pipe(
-        tap((response) =>
-          this.state.setSession(response.accessToken, response.user, false),
-        ),
-      );
-    }
-
     return this.http
       .post<BackendLoginResponse>(`${this.apiUrl}/login`, credentials)
       .pipe(
@@ -89,11 +73,6 @@ export class AuthService {
   }
 
   initialize(): Observable<void> {
-    if (this.environment.demoMode) {
-      this.state.markInitialized();
-      return of(undefined);
-    }
-
     const accessToken = this.state.restoreAccessToken();
     if (!accessToken) {
       this.state.markInitialized();
