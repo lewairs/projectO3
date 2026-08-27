@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
 import { APP_ENVIRONMENT } from '../../../../core/config/api.config';
 import {
@@ -14,8 +14,17 @@ export class DepartmentService {
   private readonly http = inject(HttpClient);
   private readonly environment = inject(APP_ENVIRONMENT);
   private readonly apiUrl = `${this.environment.apiBaseUrl}/departments`;
+
   getAll(): Observable<Department[]> {
-    return this.http.get<Department[]>(`${this.apiUrl}/path`);
+    return this.http.get<Department[]>(this.apiUrl).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 400 || error.status === 404) {
+          return this.http.get<Department[]>(`${this.apiUrl}/path`);
+        }
+
+        return throwError(() => error);
+      }),
+    );
   }
 
   getById(id: string): Observable<Department> {

@@ -29,12 +29,12 @@ describe('DepartmentService', () => {
 
   afterEach(() => http.verify());
 
-  it('loads active departments from the backend contract endpoint', () => {
+  it('loads active departments from the REST collection endpoint', () => {
     service.getAll().subscribe((departements) => {
       expect(departements[0].code).toBe('DSI');
     });
 
-    const request = http.expectOne('/backend/departments/path');
+    const request = http.expectOne('/backend/departments');
     expect(request.request.method).toBe('GET');
     request.flush([
       {
@@ -49,5 +49,21 @@ describe('DepartmentService', () => {
         updatedById: null,
       },
     ]);
+  });
+
+  it('falls back to the legacy path endpoint for the older backend', () => {
+    service.getAll().subscribe((departements) => {
+      expect(departements).toEqual([]);
+    });
+
+    const collectionRequest = http.expectOne('/backend/departments');
+    collectionRequest.flush(
+      { message: 'Cannot GET /departments' },
+      { status: 404, statusText: 'Not Found' },
+    );
+
+    const legacyRequest = http.expectOne('/backend/departments/path');
+    expect(legacyRequest.request.method).toBe('GET');
+    legacyRequest.flush([]);
   });
 });
