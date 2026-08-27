@@ -129,6 +129,8 @@
 .section-heading p { color:#7a7e86; font-size:12px; }
 .live-status { color:#5c616a; font-size:11px; }
 .live-status i { margin-right:5px; color:#2e9d58; font-size:7px; }
+.live-status.offline { color:#8a0000; }
+.live-status.offline i { color:#d32f2f; }
 .backend-error { grid-column:1 / -1; padding:14px; color:#8a0000; background:#ffecec; border-radius:8px; }
 .availability-card { padding:20px; border:1px solid #e7e9ee; border-radius:12px; background:#fff; box-shadow:0 5px 16px rgba(24,29,38,.045); }
 .availability-card h2 { margin:0 0 10px; font-size:17px; }

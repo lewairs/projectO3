@@ -10,7 +10,7 @@ export interface PositionSummary {
   name: string;
 }
 
-export type BackendRole = 'ADMINISTRATEUR' | 'UTILISATEUR';
+export type BackendRole = string;
 
 export interface BackendUser {
   id: string;

@@ -16,7 +16,10 @@
             <h2>Vue d’ensemble</h2>
             <p>Les indicateurs clés de votre activité.</p>
         </div>
-        <span class="live-status"><i class="fa-solid fa-circle"></i> Données du backend</span>
+        <span class="live-status" [class.offline]="errorMessage()">
+            <i class="fa-solid fa-circle"></i>
+            {{ errorMessage() ? 'Backend indisponible' : 'Données du backend' }}
+        </span>
     </div>
 
     <div class="stats-grid">
