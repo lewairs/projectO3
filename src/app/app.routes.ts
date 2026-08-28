@@ -50,7 +50,7 @@ export const routes: Routes = [
     path: 'espace-utilisateur',
     canActivate: [authGuard, passwordChangeGuard, roleGuard(['UTILISATEUR']), permissionGuard('dashboard.read')],
     loadComponent: () =>
-      import('./features/user/dashboard/user-dashboard').then((m) => m.UserDashboard),
+      import('./features/user/dashboard/internship-card-dashboard').then((m) => m.InternshipCardDashboard),
   },
   {
     path: 'dashboard',

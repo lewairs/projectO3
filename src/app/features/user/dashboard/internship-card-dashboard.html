@@ -1,0 +1,97 @@
+<div class="user-shell">
+  <header class="user-header">
+    <div class="brand">
+      <img src="/images/orange_logo.jpg" alt="Orange Mali" width="44" height="44">
+      <span><strong>Orange Mali</strong><small>Gestion des stages</small></span>
+    </div>
+    <div class="account" (click)="$event.stopPropagation()">
+      <button class="account-trigger" type="button" aria-haspopup="menu" [attr.aria-expanded]="userMenuOpened()" (click)="toggleUserMenu($event)">
+        <span class="avatar"><i class="fa-regular fa-user"></i></span>
+        <span><strong>{{ fullName() }}</strong><small>{{ user()?.role }}</small></span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      @if (userMenuOpened()) {
+        <div class="account-menu" role="menu">
+          <span>{{ user()?.email }}</span>
+          <button type="button" role="menuitem" (click)="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</button>
+        </div>
+      }
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">ESPACE UTILISATEUR</p>
+        <h1>Stages de l’entreprise</h1>
+        <p>Retrouvez les stages enregistrés, leurs stagiaires et les équipes qui les accompagnent.</p>
+      </div>
+      <div class="hero-mark" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></div>
+    </section>
+
+    <section class="summary-grid" aria-label="Résumé des stages">
+      <article><span class="summary-icon ongoing"><i class="fa-solid fa-person-running"></i></span><div><strong>{{ summary().ongoingInternships }}</strong><small>Stages en cours</small></div></article>
+      <article><span class="summary-icon planned"><i class="fa-regular fa-calendar"></i></span><div><strong>{{ summary().plannedInternships }}</strong><small>Stages planifiés</small></div></article>
+      <article><span class="summary-icon projects"><i class="fa-solid fa-diagram-project"></i></span><div><strong>{{ summary().activeProjects }}</strong><small>Projets actifs</small></div></article>
+    </section>
+
+    <section class="filters" aria-label="Recherche et filtres">
+      <label class="search-control"><span>Rechercher un stage</span><div><i class="fa-solid fa-magnifying-glass"></i><input type="search" placeholder="Stagiaire, référence ou projet…" [value]="search()" (input)="updateSearch($event)"></div></label>
+      <label><span>Département</span><select [value]="departmentFilter()" (change)="updateDepartment($event)"><option value="">Tous les départements</option>@for (department of departments(); track department.id) { <option [value]="department.id">{{ department.code }} — {{ department.name }}</option> }</select></label>
+      <label><span>Statut du stage</span><select [value]="statusFilter()" (change)="updateStatus($event)"><option value="">Tous les statuts</option><option value="PLANNED">Planifié</option><option value="ONGOING">En cours</option><option value="COMPLETED">Terminé</option><option value="CANCELLED">Annulé</option></select></label>
+      <label><span>Statut du projet</span><select [value]="projectStatusFilter()" (change)="updateProjectStatus($event)"><option value="">Tous les projets</option><option value="PLANNED">Planifié</option><option value="ONGOING">En cours</option><option value="ON_HOLD">En attente</option><option value="COMPLETED">Terminé</option><option value="CANCELLED">Annulé</option></select></label>
+      <button class="refresh-button" type="button" title="Actualiser" aria-label="Actualiser" (click)="loadInternships()"><i class="fa-solid fa-rotate"></i></button>
+    </section>
+
+    <div class="catalog-heading"><div><h2>Catalogue des stages</h2><span>{{ totalResults() }} stage(s) trouvé(s)</span></div><span class="live-dot"><i></i>Données actualisées</span></div>
+
+    @if (errorMessage()) {
+      <div class="state error" role="alert"><i class="fa-solid fa-circle-exclamation"></i><div><strong>Chargement impossible</strong><span>{{ errorMessage() }}</span></div><button type="button" (click)="loadInternships()">Réessayer</button></div>
+    } @else if (loading()) {
+      <section class="card-grid" aria-label="Chargement des stages">
+        @for (placeholder of [1,2,3,4,5,6]; track placeholder) { <article class="internship-card skeleton"><div></div><div></div><div></div><div></div></article> }
+      </section>
+    } @else if (!internships().length) {
+      <div class="state empty"><span><i class="fa-regular fa-folder-open"></i></span><strong>Aucun stage trouvé</strong><p>Modifiez votre recherche ou vos filtres pour afficher d’autres résultats.</p></div>
+    } @else {
+      <section class="card-grid" aria-label="Liste des stages">
+        @for (item of internships(); track item.id) {
+          <article class="internship-card">
+            <header class="card-header">
+              <span class="reference">{{ item.referenceCode }}</span>
+              <span class="status" [class]="statusClass(item.status)"><i></i>{{ statusLabel(item.status) }}</span>
+            </header>
+            <div class="card-title"><h3>{{ item.title }}</h3><p>{{ item.description || 'Stage professionnel au sein d’Orange Mali.' }}</p></div>
+
+            <div class="intern-profile">
+              <span class="intern-avatar">{{ internInitials(item) }}</span>
+              <div><small>STAGIAIRE</small><strong>{{ internName(item) }}</strong><span>{{ item.intern.registrationCode || 'Matricule non renseigné' }}</span></div>
+            </div>
+
+            <dl class="details-grid">
+              <div><dt><i class="fa-solid fa-user-tie"></i> Encadreur</dt><dd>{{ supervisorName(item) }}</dd></div>
+              <div><dt><i class="fa-solid fa-building-columns"></i> Tutelle</dt><dd>{{ authorityName(item) }}<small>{{ authorityTitle(item) }}</small></dd></div>
+              <div><dt><i class="fa-solid fa-building"></i> Département</dt><dd>{{ item.department.name }}</dd></div>
+              <div>
+                <dt><i class="fa-solid fa-diagram-project"></i> Projet</dt>
+                @if (project(item); as selectedProject) { <dd>{{ selectedProject.name }}<small>{{ selectedProject.projectCode || projectRole(item) }}</small></dd> }
+                @else { <dd class="muted">Non affecté</dd> }
+              </div>
+            </dl>
+
+            <footer class="card-footer">
+              <span><i class="fa-regular fa-calendar"></i>{{ formatDate(item.startDate) }} <b>→</b> {{ formatDate(item.endDate) }}</span>
+              <span><i class="fa-solid fa-location-dot"></i>{{ item.workLocation || 'Orange Mali' }}</span>
+            </footer>
+          </article>
+        }
+      </section>
+
+      <footer class="pagination" aria-label="Pagination">
+        <span>Affichage {{ displayedRange() }} sur {{ totalResults() }}</span>
+        <label><span>Cartes par page</span><select [value]="pageSize()" (change)="updatePageSize($event)"><option value="6">6</option><option value="9">9</option><option value="12">12</option></select></label>
+        <div><button type="button" aria-label="Page précédente" [disabled]="page() === 1" (click)="previousPage()"><i class="fa-solid fa-chevron-left"></i></button><strong>{{ page() }} / {{ totalPages() }}</strong><button type="button" aria-label="Page suivante" [disabled]="page() === totalPages()" (click)="nextPage()"><i class="fa-solid fa-chevron-right"></i></button></div>
+      </footer>
+    }
+  </main>
+</div>
